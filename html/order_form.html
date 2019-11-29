@@ -1,0 +1,93 @@
+<div class="my-order-form">
+    <div class="row">
+        <div class="column">
+            <div class="input-group">
+                <label for="order-form-rooms">Комнат</label>
+                <input id="order-form-rooms" type="number" name="rooms" value="1" pattern="\d{1,3}" maxlength="3"/>
+            </div>
+            <div class="input-group">
+                <label for="order-form-baths">Санузлов</label>
+                <input id="order-form-baths" type="number" name="baths" value="1" pattern="\d{1,3}" maxlength="3"/>
+            </div>
+            <div class="input-group">
+                <label for="order-form-name">Ваше имя</label>
+                <input id="order-form-name" type="text" name="name" placeholder="Ваше Имя"/>
+            </div>
+            <div class="input-group">
+                <label for="order-form-datetime">Время заказа</label>
+                <input type="datetime-local" id="order-form-datetime">
+            </div>
+            <div class="input-group">
+                <label for="order-form-phone">Телефон</label>
+                <input id="order-form-phone" type="tel" name="phone" placeholder="+375 (XX) XXX-XX-XX"/>
+            </div>
+            <div class="input-group">
+                <label for="order-form-address">Адрес</label>
+                <input id="order-form-address" type="text"
+                       placeholder="г.Минск, ул.Космонавтов 47-24, 1 подъезд, 5-й этаж"/>
+            </div>
+            <div class="input-group">
+                <label for="order-form-email">Почта</label>
+                <input id="order-form-email" type="email" name="email" placeholder="mymain@gmail.com"/>
+            </div>
+        </div>
+        <!--        TODO Выбор типа уборки-->
+        <!--        <div class="column">-->
+        <!--            <fieldset class="order-form-cleaning-type">-->
+        <!--                <legend>Тип уборки, который вам нужен*</legend>-->
+        <!--                <div id="spring-cleaning">-->
+        <!--                    <label for="order-form-cleaning-type-spring-cleaning">-->
+        <!--                        <input type="radio" name="order-form-cleaning-type"-->
+        <!--                               id="order-form-cleaning-type-spring-cleaning"-->
+        <!--                               value="spring-cleaning"> Генеральная-->
+        <!--                    </label>-->
+        <!--                    <div class="modal-window-description">-->
+        <!--                        Генеральная уборка - <br>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <label>-->
+        <!--                    <input type="radio" name="order-form-cleaning-type" id="order-form-cleaning-type-classic"-->
+        <!--                           value="classic"> Классическая-->
+        <!--                </label>-->
+        <!--                <label>-->
+        <!--                    <input type="radio" name="order-form-cleaning-type" id="order-form-cleaning-type-supporting"-->
+        <!--                           value="supporting"> Поддерживающая-->
+        <!--                </label>-->
+        <!--            </fieldset>-->
+        <!--            <br>-->
+        <!--        </div>-->
+        <div class="column">
+            <fieldset class="order-form-extras">
+                <legend>Дополнительные услуги</legend>
+                <label>
+                    <input type="checkbox" id="order-form-extras-windows" value="windows">
+                    Мойка Окон
+                </label>
+                <label>
+                    <input type="checkbox" id="order-form-extras-optimisation" value="optimisation">
+                    Оптимизация внутреннего пространства шкафов
+                </label>
+                <label>
+                    <input type="checkbox" id="order-form-extras-kitchen-inside-technique" value="kit">
+                    Мойка кухонной техники изнутри
+                </label>
+                <label>
+                    <input type="checkbox" id="order-form-extras-kitchen-inside-cabinets" value="kic">
+                    Мойка шкафчиков изнутри
+                </label>
+                <label>
+                    <input type="checkbox" id="order-form-extras-balcony" value="balcony">
+                    Уборка балкона
+                </label>
+                <label>
+                    <input type="checkbox" id="order-form-extras-ironing" value="ironing">
+                    Глажка вещей
+                </label>
+                <label>
+                    <input type="checkbox" id="order-form-extras-fridge" value="fridge">
+                    Чистка холодильника и морозильной камеры
+                </label>
+            </fieldset>
+        </div>
+    </div>
+</div>
