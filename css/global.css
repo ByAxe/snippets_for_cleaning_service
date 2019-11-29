@@ -52,9 +52,8 @@
 }
 
 @media screen and (max-width: 600px) {
-    .column {
-        flex-direction: column;
-        flex-wrap: wrap;
+    .row {
+        display: block;
     }
 }
 
