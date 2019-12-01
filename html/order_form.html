@@ -31,31 +31,69 @@
                 <input id="order-form-email" type="email" name="email" placeholder="mymain@gmail.com"/>
             </div>
         </div>
-        <!--        TODO Выбор типа уборки-->
-        <!--        <div class="column">-->
-        <!--            <fieldset class="order-form-cleaning-type">-->
-        <!--                <legend>Тип уборки, который вам нужен*</legend>-->
-        <!--                <div id="spring-cleaning">-->
-        <!--                    <label for="order-form-cleaning-type-spring-cleaning">-->
-        <!--                        <input type="radio" name="order-form-cleaning-type"-->
-        <!--                               id="order-form-cleaning-type-spring-cleaning"-->
-        <!--                               value="spring-cleaning"> Генеральная-->
-        <!--                    </label>-->
-        <!--                    <div class="modal-window-description">-->
-        <!--                        Генеральная уборка - <br>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--                <label>-->
-        <!--                    <input type="radio" name="order-form-cleaning-type" id="order-form-cleaning-type-classic"-->
-        <!--                           value="classic"> Классическая-->
-        <!--                </label>-->
-        <!--                <label>-->
-        <!--                    <input type="radio" name="order-form-cleaning-type" id="order-form-cleaning-type-supporting"-->
-        <!--                           value="supporting"> Поддерживающая-->
-        <!--                </label>-->
-        <!--            </fieldset>-->
-        <!--            <br>-->
-        <!--        </div>-->
+        <div class="column">
+            <fieldset class="order-form-cleaning-type">
+                <legend>Тип уборки, который вам нужен*</legend>
+                <div id="spring-cleaning">
+                    <label for="order-form-cleaning-type-spring-cleaning">
+                        <input id="order-form-cleaning-type-spring-cleaning" name="order-form-cleaning-type"
+                               type="radio" value="spring-cleaning"> Генеральная
+                    </label>
+                    <div class="modal-window-description-sc">
+                        <div class="modal-window-description-header">
+                            <h2>Генеральная</h2>
+                        </div>
+                        <ul class="modal-window-description-features">
+                            <li><b>Генеральную уборку</b>, согласно рекомендациям специалистов,
+                                следует проводить не реже чем <b>раз в 3 месяца</b>.
+                                <br>Таким образом вы не дадите пыли скопиться и позаботитесь о своем здоровье,
+                                насколько это возможно
+                            </li>
+                            <li><b>Генеральная уборка занимает дольше чем обычная</b>, потому что включает все
+                                дополнительные меры по очистке помещений: мойку окон,
+                                внутренних частей кухонной мебели и тд.
+                            </li>
+                            <li><b>Однако</b>, если вы из тех людей, для кого <i>чистота является особенно важным
+                                критерием</i>
+                                комфорта, то проводить ее можно <b>с частотой обычной убоки</b>,
+                                ведь так вы всегда сможете
+                                жить, как в абсолютно новой квартире
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="classic-cleaning">
+                    <label>
+                        <input id="order-form-cleaning-type-classic" name="order-form-cleaning-type" type="radio"
+                               value="classic"> Классическая
+                    </label>
+                    <div class="modal-window-description-c">
+                        <div class="modal-window-description-header">
+                            <h2>Классическая</h2>
+                        </div>
+                        <ul class="modal-window-description-features">
+                            <li><b>Классическая уборка</b>, это вид уборки, при котором наша компания выполняет все
+                                указанные в <a href="#our-services-block">оказываемых услугах</a>
+                                процедуры очистки помещений. По умолчанию доп. услуги не входят в этот перечень,
+                                но <i>их можно добавить</i> когда вы заказываете наш сервис.
+                            </li>
+                            <li><b>Кроме стандарных моментов</b>, она включает в себя такие меры, как складывание
+                                одежды, чистка плинтуса от грязи, мойка зеркал/санузлов и раковин и тд.
+                            </li>
+                            <li><b>Данный вид уборки</b>, у наших мастеров, занимает уже <b>меньше времени</b> чем
+                                генеральная, но все еще это время варъируется в рамках пары-тройки часов, в зависимости
+                                от помещения
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--TODO add information for mobile user-->
+                <!--<a href="#">Не знаете какой тип вам нужен?</a>-->
+                <!--<div class="order-form-cleaning-type-additional-information">-->
+                <!--</div>-->
+            </fieldset>
+            <br>
+        </div>
         <div class="column">
             <fieldset class="order-form-extras">
                 <legend>Дополнительные услуги</legend>
