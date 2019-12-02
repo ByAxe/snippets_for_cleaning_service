@@ -1,11 +1,13 @@
 const springCleaningType = 'spring-cleaning';
 const classicCleaningType = 'classic-cleaning';
+const priceType = "PRICE";
+const timeType = "TIME";
 
 // Выбрали Генеральную уборку
 jQuery('#order-form-cleaning-type-spring-cleaning')
     .on('click', () => {
         // добавить галочки ко всем доп.услугам
-        jQuery('.order-form-extras-checkbox').prop('checked', true);
+        markAllExtrasAs(true);
 
         updatePricesAndTime();
     });
@@ -14,10 +16,24 @@ jQuery('#order-form-cleaning-type-spring-cleaning')
 jQuery('#order-form-cleaning-type-classic')
     .on('click', () => {
         // убрать галочки со всех доп.услуг
-        jQuery('.order-form-extras-checkbox').prop('checked', false);
+        markAllExtrasAs(false);
 
         updatePricesAndTime();
     });
+
+// Если все чекбоксы выбраны - выставить тип Генеральная уборка
+jQuery(".order-form-extras-checkbox").on('click', () => {
+    if (isAllExtrasSelected()) {
+        // выбираем
+        jQuery("#order-form-cleaning-type-spring-cleaning").click();
+
+        updatePricesAndTime();
+    }
+});
+
+function markAllExtrasAs(checked) {
+    jQuery('.order-form-extras-checkbox').prop('checked', checked);
+}
 
 function handleNumberInputChange(input) {
     restrictNumberValues(input);
@@ -55,8 +71,6 @@ function recalculatePrice() {
     const pricePerRoom = 14;
     const pricePerBath = 15;
     const priceStartingPoint = 16;
-    const springCleaningMultiplier = 2;
-    const classicCleaningMultiplier = 1;
 
     // get amount of rooms selected
     let rooms = getAmountOfRoomsSelected();
@@ -75,11 +89,40 @@ function recalculatePrice() {
 
     let bathsCost = pricePerBath * baths;
 
-    let cleaningTypeMultiplier = cleaningType === springCleaningType
-        ? springCleaningMultiplier
-        : classicCleaningMultiplier;
+    let cleaningTypeMultiplier = getCleaningTypeMultiplier(priceType, cleaningType);
 
     return (priceStartingPoint + roomsCost + bathsCost) * cleaningTypeMultiplier;
+}
+
+function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
+    let resultingMultiplier = 1;
+
+    const springCleaningPriceMultiplier = 2.3;
+    const classicCleaningPriceMultiplier = 1;
+
+    const springCleaningTimeMultiplier = 1.5;
+    const classicCleaningTimeMultiplier = 1;
+
+    switch (typeOfMultiplier) {
+        case priceType:
+            if (cleaningType === springCleaningType) {
+                resultingMultiplier = springCleaningPriceMultiplier;
+            } else if (cleaningType === classicCleaningType) {
+                resultingMultiplier = classicCleaningPriceMultiplier
+            }
+            break;
+        case timeType:
+            if (cleaningType === springCleaningType) {
+                resultingMultiplier = springCleaningTimeMultiplier;
+            } else if (cleaningType === classicCleaningType) {
+                resultingMultiplier = classicCleaningTimeMultiplier
+            }
+            break;
+        default:
+            break;
+    }
+
+    return resultingMultiplier;
 }
 
 function getExtrasSelected() {
@@ -108,7 +151,7 @@ function getAmountOfBathsSelected() {
 
 function updatePrices() {
     let spanTag = '</span>';
-    let discount = 0;
+    let discount = .0;
     let priceTagsArray = document.getElementsByClassName('price-tag');
     let length = priceTagsArray.length;
 
@@ -118,19 +161,70 @@ function updatePrices() {
         let spanWithCurrency = priceTagsArray[i].innerHTML.split(spanTag)[0] + spanTag;
 
         // apply discount
-        let currentPriceWithDiscount = currentPrice - (currentPrice * discount);
+        let currentPriceWithDiscount = Math.round(currentPrice - (currentPrice * discount));
 
         // update value in html
         priceTagsArray[i].innerHTML = spanWithCurrency + currentPriceWithDiscount;
 
         // update discount for the next option
-        if (i === 0) discount += 10;
-        else discount += 5;
+        if (i === 0) discount += .10;
+        else discount += .05;
     }
 }
 
+function isAllExtrasSelected() {
+    let checkboxes = jQuery('.order-form-extras-checkbox');
+    let allCheckBoxes = checkboxes.length;
+
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked) allCheckBoxes--;
+    }
+
+    if (allCheckBoxes === 0) return true;
+}
+
+function recalculateTime() {
+    const initialTime = 2;
+    const roomsTimeMultiplier = 0.5;
+    const bathsTimeMultiplier = 0.5;
+
+    // get amount of rooms selected
+    let rooms = getAmountOfRoomsSelected();
+
+    // get amount of baths selected
+    let baths = getAmountOfBathsSelected();
+
+    // get type of cleaning selected
+    let cleaningType = getTypeOfCleaningSelected();
+
+    // get extras selected
+    let extras = getExtrasSelected();
+
+    let roomsTime = rooms * roomsTimeMultiplier;
+    let bathsTime = baths * bathsTimeMultiplier;
+    let cleaningTypeMultiplier = getCleaningTypeMultiplier(timeType, cleaningType);
+
+    let resultingTime = Math.ceil((initialTime + roomsTime + bathsTime) * cleaningTypeMultiplier);
+
+    if (resultingTime > 8) resultingTime = "8+";
+
+    return resultingTime;
+}
+
+function getEndingForNumber(newTime) {
+    return newTime === 2 || newTime === 3 || newTime === 4
+        ? "часа"
+        : "часов";
+}
+
 function updateTime() {
-    // TODO implement
+    let newTime = recalculateTime();
+    let newEnding = getEndingForNumber(newTime);
+
+    document.getElementById("approximate-time-block")
+        .getElementsByTagName("h3")
+        .item(0)
+        .innerText = "Примерное время уборки ~" + newTime + " " + newEnding
 }
 
 function restrictNumberValues(input) {
