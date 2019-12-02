@@ -126,8 +126,14 @@ function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
 }
 
 function getExtrasSelected() {
-    // TODO implement in further versions
-    return undefined;
+    let checkboxes = jQuery('.order-form-extras-checkbox');
+    let selectedExtras = [];
+
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked) selectedExtras.push(checkbox.id)
+    }
+
+    return selectedExtras;
 }
 
 function getAmountOfRoomsSelected() {
