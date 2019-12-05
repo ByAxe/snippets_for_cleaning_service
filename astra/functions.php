@@ -8,24 +8,24 @@
  * @since 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
 }
 
 /**
  * Define Constants
  */
-define( 'ASTRA_THEME_VERSION', '2.1.3' );
-define( 'ASTRA_THEME_SETTINGS', 'astra-settings' );
-define( 'ASTRA_THEME_DIR', trailingslashit( get_template_directory() ) );
-define( 'ASTRA_THEME_URI', trailingslashit( esc_url( get_template_directory_uri() ) ) );
+define('ASTRA_THEME_VERSION', '2.1.3');
+define('ASTRA_THEME_SETTINGS', 'astra-settings');
+define('ASTRA_THEME_DIR', trailingslashit(get_template_directory()));
+define('ASTRA_THEME_URI', trailingslashit(esc_url(get_template_directory_uri())));
 
 
 /**
  * Minimum Version requirement of the Astra Pro addon.
  * This constant will be used to display the notice asking user to update the Astra addon to latest version.
  */
-define( 'ASTRA_EXT_MIN_VER', '2.0.0' );
+define('ASTRA_EXT_MIN_VER', '2.0.0');
 
 /**
  * Setup helper functions of Astra.
@@ -47,8 +47,8 @@ require_once ASTRA_THEME_DIR . 'inc/theme-update/class-astra-pb-compatibility.ph
  * Fonts Files
  */
 require_once ASTRA_THEME_DIR . 'inc/customizer/class-astra-font-families.php';
-if ( is_admin() ) {
-	require_once ASTRA_THEME_DIR . 'inc/customizer/class-astra-fonts-data.php';
+if (is_admin()) {
+    require_once ASTRA_THEME_DIR . 'inc/customizer/class-astra-fonts-data.php';
 }
 
 require_once ASTRA_THEME_DIR . 'inc/customizer/class-astra-fonts.php';
@@ -93,18 +93,18 @@ require_once ASTRA_THEME_DIR . 'inc/core/class-astra-admin-helper.php';
 
 require_once ASTRA_THEME_DIR . 'inc/schema/class-astra-schema.php';
 
-if ( is_admin() ) {
+if (is_admin()) {
 
-	/**
-	 * Admin Menu Settings
-	 */
-	require_once ASTRA_THEME_DIR . 'inc/core/class-astra-admin-settings.php';
-	require_once ASTRA_THEME_DIR . 'inc/lib/notices/class-astra-notices.php';
+    /**
+     * Admin Menu Settings
+     */
+    require_once ASTRA_THEME_DIR . 'inc/core/class-astra-admin-settings.php';
+    require_once ASTRA_THEME_DIR . 'inc/lib/notices/class-astra-notices.php';
 
-	/**
-	 * Metabox additions.
-	 */
-	require_once ASTRA_THEME_DIR . 'inc/metabox/class-astra-meta-boxes.php';
+    /**
+     * Metabox additions.
+     */
+    require_once ASTRA_THEME_DIR . 'inc/metabox/class-astra-meta-boxes.php';
 }
 
 require_once ASTRA_THEME_DIR . 'inc/metabox/class-astra-meta-box-operations.php';
@@ -140,14 +140,14 @@ require_once ASTRA_THEME_DIR . 'inc/addons/breadcrumbs/class-astra-breadcrumbs.p
 require_once ASTRA_THEME_DIR . 'inc/class-astra-filesystem.php';
 
 // Elementor Compatibility requires PHP 5.4 for namespaces.
-if ( version_compare( PHP_VERSION, '5.4', '>=' ) ) {
-	require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-elementor.php';
-	require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-elementor-pro.php';
+if (version_compare(PHP_VERSION, '5.4', '>=')) {
+    require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-elementor.php';
+    require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-elementor-pro.php';
 }
 
 // Beaver Themer compatibility requires PHP 5.3 for anonymus functions.
-if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-	require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-beaver-themer.php';
+if (version_compare(PHP_VERSION, '5.3', '>=')) {
+    require_once ASTRA_THEME_DIR . 'inc/compatibility/class-astra-beaver-themer.php';
 }
 
 /**
@@ -157,14 +157,31 @@ require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-filters.php';
 require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-hooks.php';
 require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-functions.php';
 
+// Add custom CSS
+/**
+ * Proper way to enqueue scripts and styles
+ */
+//function wpdocs_theme_name_scripts()
+//{
+//    wp_enqueue_style('global', ASTRA_THEME_DIR . 'assets/css/global.css');
+//    wp_enqueue_script('order_form_interaction', ASTRA_THEME_DIR . 'assets/js/order_form_interaction.js', array(), '1.0.0', true);
+//    wp_enqueue_script('order_form_send', ASTRA_THEME_DIR . 'assets/js/order_form_send.js', array(), '1.0.0', true);
+//}
+//
+//add_action('wp_enqueue_scripts', 'wpdocs_theme_name_scripts');
+
+
 add_action('wp_ajax_order', 'order_function'); // wp_ajax_{ЗНАЧЕНИЕ ПАРАМЕТРА ACTION!!}
 add_action('wp_ajax_nopriv_order', 'order_function');  // wp_ajax_nopriv_{ЗНАЧЕНИЕ ACTION!!}
 // первый хук для авторизованных, второй для не авторизованных пользователей
 
+// function that works with sent order data
 function order_function()
 {
     $body = $_POST['body'];
     echo $body;
+
+    // TODO save data to DB
 
     die; // даём понять, что обработчик закончил выполнение
 }

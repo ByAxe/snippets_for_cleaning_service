@@ -52,11 +52,10 @@ function collectOrderData() {
 
 function sendOrderDataOnBackend(orderData, frequency) {
     let requestBody = JSON.stringify({orderData: orderData, frequency: frequency});
-    let url = '<?php echo admin_url("admin-ajax.php") ?>';
-    let directUrl = 'http://xn--90aia2asp.xn--90ais/wp-admin/admin-ajax.php';
+    let url = 'http://xn--90aia2asp.xn--90ais/wp-admin/admin-ajax.php';
     let action = "order";
 
-    let fetchInput = `${directUrl}?action=${action}&body=${encodeURI(requestBody)}`;
+    let fetchInput = `${url}?action=${action}&body=${encodeURI(requestBody)}`;
 
     let response = fetch(fetchInput, {
         method: "POST",
