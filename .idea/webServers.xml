@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="52bd940c-814f-4b1a-a25c-6173d8b21375" name="uberem" url="http://178.124.139.19">
+        <fileTransfer host="178.124.139.19" port="21" rootFolder="/www/xn--90aia2asp.xn--90ais/wp-content/themes/astra">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

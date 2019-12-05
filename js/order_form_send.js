@@ -25,9 +25,9 @@ jQuery("a[href='#order-frequency-option-often']").on("click", () => {
 function processClickOnOrderButton(frequency) {
     let orderData = collectOrderData();
 
-    sendOrderDataOnBackend(orderData, frequency);
+    let result = sendOrderDataOnBackend(orderData, frequency);
 
-    showSuccessPopupToUser();
+    showResultToUser(result);
 }
 
 function collectOrderData() {
@@ -51,14 +51,18 @@ function collectOrderData() {
 }
 
 function sendOrderDataOnBackend(orderData, frequency) {
-    // TODO implement sending on backend
     let requestBody = JSON.stringify({orderData: orderData, frequency: frequency});
+    let url = '<?php echo admin_url("admin-ajax.php") ?>';
+    let action = "order";
 
-    let xmlHttpRequest = new XMLHttpRequest();
-    xmlHttpRequest.open("POST", "send-message.php")
+    let response = fetch(`${url}?action=${action}&body=${encodeURI(requestBody)}`, {
+        method: "POST",
+    });
+
+    return response.text();
 }
 
-function showSuccessPopupToUser() {
+function showResultToUser(result) {
 
 }
 
