@@ -2,7 +2,7 @@ const FREQUENCY = {
     ONCE: "once",
     MONTHLY: "monthly",
     TWOWEEKLY: "twoweekly",
-    OFTEN: "often"
+    WEEKLY: "weekly"
 };
 
 jQuery("a[href='#order-frequency-option-once']").on("click", () => {
@@ -18,19 +18,19 @@ jQuery("a[href='#order-frequency-option-twoweekly']").on("click", () => {
 });
 
 jQuery("a[href='#order-frequency-option-often']").on("click", () => {
-    processClickOnOrderButton(FREQUENCY.OFTEN);
+    processClickOnOrderButton(FREQUENCY.WEEKLY);
 });
 
 
 function processClickOnOrderButton(frequency) {
-    let orderData = collectOrderData();
+    let orderData = collectOrderData(frequency);
 
-    let result = sendOrderDataOnBackend(orderData, frequency);
+    let result = sendOrderDataOnBackend(orderData);
 
     showResultToUser(result);
 }
 
-function collectOrderData() {
+function collectOrderData(frequency) {
     function getValueForInput(id) {
         return document.getElementById(id).value;
     }
@@ -38,20 +38,23 @@ function collectOrderData() {
     return {
         rooms: getAmountOfRoomsSelected(),
         baths: getAmountOfBathsSelected(),
-        cleaning_type: getTypeOfCleaningSelected(),
-        selected_extras: getExtrasSelected(),
+        cleaningType: getTypeOfCleaningSelected(),
+        selectedExtras: getExtrasSelected(),
         customer: {
             name: getValueForInput("order-form-name"),
             date: getValueForInput("order-form-datetime"),
             phone: getValueForInput("order-form-phone"),
             address: getValueForInput("order-form-address"),
             email: getValueForInput("order-form-email"),
-        }
+        },
+        approximateCost: getApproximateCost(frequency),
+        approximateTime: getApproximateTime(),
+        frequency: frequency
     };
 }
 
-function sendOrderDataOnBackend(orderData, frequency) {
-    let requestBody = JSON.stringify({orderData: orderData, frequency: frequency});
+function sendOrderDataOnBackend(orderData) {
+    let requestBody = JSON.stringify(orderData);
     let url = 'http://xn--90aia2asp.xn--90ais/wp-admin/admin-ajax.php';
     let action = "order";
 
@@ -61,7 +64,7 @@ function sendOrderDataOnBackend(orderData, frequency) {
         method: "POST",
     });
 
-    return response.text();
+    return response.json;
 }
 
 function showResultToUser(result) {

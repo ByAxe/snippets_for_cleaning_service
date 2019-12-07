@@ -157,22 +157,8 @@ require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-filters.php';
 require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-hooks.php';
 require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-functions.php';
 
-// Add custom CSS
-/**
- * Proper way to enqueue scripts and styles
- */
-
+// первый хук для авторизованных, второй для не авторизованных пользователей
 add_action('wp_ajax_order', 'order_function'); // wp_ajax_{ЗНАЧЕНИЕ ПАРАМЕТРА ACTION!!}
 add_action('wp_ajax_nopriv_order', 'order_function');  // wp_ajax_nopriv_{ЗНАЧЕНИЕ ACTION!!}
-// первый хук для авторизованных, второй для не авторизованных пользователей
 
-// function that works with sent order data
-function order_function()
-{
-    $body = $_POST['body'];
-    echo $body;
-
-    // TODO save data to DB
-
-    die; // даём понять, что обработчик закончил выполнение
-}
+include 'ordering.php';

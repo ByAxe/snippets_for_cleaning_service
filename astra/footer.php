@@ -10,34 +10,34 @@
  * @since 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
 }
 
 ?>
-			<?php astra_content_bottom(); ?>
+<?php astra_content_bottom(); ?>
 
-			</div> <!-- ast-container -->
+</div> <!-- ast-container -->
 
-		</div><!-- #content -->
+</div><!-- #content -->
 
-		<?php astra_content_after(); ?>
+<?php astra_content_after(); ?>
 
-		<?php astra_footer_before(); ?>
+<?php astra_footer_before(); ?>
 
-		<?php astra_footer(); ?>
+<?php astra_footer(); ?>
 
-		<?php astra_footer_after(); ?>
+<?php astra_footer_after(); ?>
 
-	</div><!-- #page -->
+</div><!-- #page -->
 
-	<?php astra_body_bottom(); ?>
+<?php astra_body_bottom(); ?>
 
-	<?php wp_footer(); ?>
+<?php wp_footer(); ?>
 
-<script src="http://xn--90aia2asp.xn--90ais/wp-content/themes/astra/assets/js/order_form_interraction.js"></script>
+<script src="http://xn--90aia2asp.xn--90ais/wp-content/themes/astra/assets/js/order_form_interaction.js"></script>
 <script src="http://xn--90aia2asp.xn--90ais/wp-content/themes/astra/assets/js/order_form_send.js"></script>
 
-	</body>
+</body>
 </html>
 

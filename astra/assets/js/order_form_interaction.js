@@ -3,6 +3,15 @@ const classicCleaningType = 'classic-cleaning';
 const priceType = "PRICE";
 const timeType = "TIME";
 
+let currentPrices = {
+    once: 0,
+    monthly: 0,
+    twoweekly: 0,
+    weekly: 0
+};
+
+let currentTimeHours = 0;
+
 // Выбрали Генеральную уборку
 jQuery('#order-form-cleaning-type-spring-cleaning')
     .on('click', () => {
@@ -155,6 +164,23 @@ function getAmountOfBathsSelected() {
     return document.getElementById('order-form-baths').value;
 }
 
+function updateGlobalPrice(price, priceNumber) {
+    switch (priceNumber) {
+        case 0:
+            currentPrices.once = price;
+            break;
+        case 1:
+            currentPrices.monthly = price;
+            break;
+        case 2:
+            currentPrices.twoweekly = price;
+            break;
+        case 3:
+            currentPrices.weekly = price;
+            break;
+    }
+}
+
 function updatePrices() {
     let spanTag = '</span>';
     let discount = .0;
@@ -171,6 +197,9 @@ function updatePrices() {
 
         // update value in html
         priceTagsArray[i].innerHTML = spanWithCurrency + currentPriceWithDiscount;
+
+        // update value in global variables
+        updateGlobalPrice(currentPriceWithDiscount, i);
 
         // update discount for the next option
         if (i === 0) discount += .10;
@@ -223,9 +252,37 @@ function getEndingForNumber(newTime) {
         : "часов";
 }
 
+function getApproximateCost(frequency) {
+    let cost = 0;
+
+    switch (frequency) {
+        case FREQUENCY.ONCE:
+            cost = currentPrices.once;
+            break;
+        case FREQUENCY.MONTHLY:
+            cost = currentPrices.monthly;
+            break;
+        case FREQUENCY.TWOWEEKLY:
+            cost = currentPrices.twoweekly;
+            break;
+        case FREQUENCY.WEEKLY:
+            cost = currentPrices.weekly;
+            break;
+    }
+
+    return cost;
+}
+
+function getApproximateTime() {
+    return currentTimeHours;
+}
+
 function updateTime() {
     let newTime = recalculateTime();
     let newEnding = getEndingForNumber(newTime);
+
+    // update global variable
+    currentTimeHours = newTime;
 
     document.getElementById("approximate-time-block")
         .getElementsByTagName("h3")
