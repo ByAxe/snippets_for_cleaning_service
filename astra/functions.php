@@ -161,15 +161,6 @@ require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-functions.php';
 /**
  * Proper way to enqueue scripts and styles
  */
-//function wpdocs_theme_name_scripts()
-//{
-//    wp_enqueue_style('global', ASTRA_THEME_DIR . 'assets/css/global.css');
-//    wp_enqueue_script('order_form_interaction', ASTRA_THEME_DIR . 'assets/js/order_form_interaction.js', array(), '1.0.0', true);
-//    wp_enqueue_script('order_form_send', ASTRA_THEME_DIR . 'assets/js/order_form_send.js', array(), '1.0.0', true);
-//}
-//
-//add_action('wp_enqueue_scripts', 'wpdocs_theme_name_scripts');
-
 
 add_action('wp_ajax_order', 'order_function'); // wp_ajax_{ЗНАЧЕНИЕ ПАРАМЕТРА ACTION!!}
 add_action('wp_ajax_nopriv_order', 'order_function');  // wp_ajax_nopriv_{ЗНАЧЕНИЕ ACTION!!}
