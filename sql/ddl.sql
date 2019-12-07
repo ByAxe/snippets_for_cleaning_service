@@ -5,7 +5,7 @@ CREATE TABLE order_data
     baths            SMALLINT    NOT NULL,
     cleaning_type    VARCHAR(50) NOT NULL,
     selected_extras  TEXT,
-    customer         JSON        NOT NULL,
+    customer         TEXT        NOT NULL,
     frequency        VARCHAR(50) NOT NULL,
     approximate_cost FLOAT       NOT NULL,
     approximate_time VARCHAR(2)  NOT NULL
