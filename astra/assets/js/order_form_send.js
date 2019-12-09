@@ -40,9 +40,9 @@ function collectOrderData(frequency) {
         baths: getAmountOfBathsSelected(),
         cleaningType: getTypeOfCleaningSelected(),
         selectedExtras: getExtrasSelected(),
+        date: getValueForInput("order-form-datetime"),
         customer: {
             name: getValueForInput("order-form-name"),
-            date: getValueForInput("order-form-datetime"),
             phone: getValueForInput("order-form-phone"),
             address: getValueForInput("order-form-address"),
             email: getValueForInput("order-form-email"),
@@ -58,7 +58,7 @@ function sendOrderDataOnBackend(orderData) {
     let url = 'http://xn--90aia2asp.xn--90ais/wp-admin/admin-ajax.php';
     let action = "order";
 
-    let fetchInput = `${url}?action=${action}&body=${encodeURI(requestBody)}`;
+    let fetchInput = `${url}?action=${action}&body=${requestBody}`;
 
     let response = fetch(fetchInput, {
         method: "POST",
