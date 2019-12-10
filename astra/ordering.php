@@ -5,6 +5,8 @@ function order_function()
 {
     $body = getBodyAsObject();
 
+    print_r($body);
+
     // Create connection
     $connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
@@ -55,7 +57,8 @@ function getBodyAsObject()
     //   },
     //   "approximateCost":66,
     //   "approximateTime":4,
-    //   "frequency":"monthly"
+    //   "frequency":"monthly".
+    //   "hasVacuumCleaner": true
     //}
     return json_decode(urldecode(explode("body=", $_SERVER['QUERY_STRING'])[1]));
 }
@@ -105,6 +108,7 @@ function saveOrderToDB(stdClass $body, $customerId, mysqli $connection)
 //        return "Error: $sql <br> $connection->error";
 //    }
 
+    return "";
 }
 
 /**
@@ -115,19 +119,17 @@ function saveOrderToDB(stdClass $body, $customerId, mysqli $connection)
 function extrasToReadableArray(array $extrasArray)
 {
     $result = array();
-    $prefix = "order-form-extras-";
 
     foreach ($extrasArray as $item) {
         $value = "";
 
-        if ($item === $prefix . "windows") $value = "Мойка Окон";
-        if ($item === $prefix . "optimisation") $value = "Оптимизация внутреннего пространства шкафов";
-        if ($item === $prefix . "kitchen-inside-technique") $value = "Мойка кухонной техники изнутри";
-        if ($item === $prefix . "kitchen-inside-cabinets") $value = "Мойка шкафчиков изнутри";
-        if ($item === $prefix . "kitchen-inside-cabinets") $value = "Мойка шкафчиков изнутри";
-        if ($item === $prefix . "balcony") $value = "Уборка балкона";
-        if ($item === $prefix . "ironing") $value = "Глажка вещей";
-        if ($item === $prefix . "fridge") $value = " Чистка холодильника и морозильной камеры";
+        if ($item === "windows") $value = "Мойка Окон";
+        if ($item === "optimisation") $value = "Оптимизация внутреннего пространства шкафов";
+        if ($item === "kit") $value = "Мойка кухонной техники изнутри";
+        if ($item === "kic") $value = "Мойка шкафчиков изнутри";
+        if ($item === "balcony") $value = "Уборка балкона";
+        if ($item === "ironing") $value = "Глажка вещей";
+        if ($item === "fridge") $value = " Чистка холодильника и морозильной камеры";
 
         $result[] = $value;
     }

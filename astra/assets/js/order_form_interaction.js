@@ -3,6 +3,26 @@ const classicCleaningType = 'classic-cleaning';
 const priceType = "PRICE";
 const timeType = "TIME";
 
+const PRICES = {
+    ROOM: 14,
+    BATH: 15,
+    START: 16,
+    VACUUM_CLEANER: 5,
+    EXTRAS: {
+        WINDOW: 8,
+        FRIDGE: 12,
+        MICROWAVE_OVEN: 8,
+        OVEN: 15,
+        COOKER_HOOD: 15,
+        DISHES: 10,
+        KEYS: 10,
+        BALCONY: 12,
+        CABINETS: 18,
+        IRONING: 10,
+        OPTIMISATION: 10
+    }
+};
+
 let currentPrices = {
     once: 0,
     monthly: 0,
@@ -66,6 +86,10 @@ function handleCalculateButtonClick(button) {
     updatePricesAndTime()
 }
 
+function handleVacuumCleanerClick(checkbox) {
+    updatePricesAndTime();
+}
+
 // update prices with the very beginning
 ((() => {
     updatePricesAndTime();
@@ -76,11 +100,21 @@ function updatePricesAndTime() {
     updateTime();
 }
 
-function recalculatePrice() {
-    const pricePerRoom = 14;
-    const pricePerBath = 15;
-    const priceStartingPoint = 16;
+function hasVacuumCleaner() {
+    let checkbox = jQuery('#order-form-vacuum-cleaner')[0];
+    return checkbox.checked ? "true" : "false";
+}
 
+function getSumOfExtras(extras) {
+
+    switch (extras) {
+        case "windows":
+    }
+
+    return undefined;
+}
+
+function recalculatePrice() {
     // get amount of rooms selected
     let rooms = getAmountOfRoomsSelected();
 
@@ -93,20 +127,31 @@ function recalculatePrice() {
     // get extras selected
     let extras = getExtrasSelected();
 
-    // calculate resulting price for selected items
-    let roomsCost = pricePerRoom * rooms;
+    let extrasCost = getSumOfExtras(extras);
 
-    let bathsCost = pricePerBath * baths;
+    // calculate resulting price for selected items
+    let roomsCost = PRICES.ROOM * rooms;
+
+    let bathsCost = PRICES.BATH * baths;
 
     let cleaningTypeMultiplier = getCleaningTypeMultiplier(priceType, cleaningType);
 
-    return (priceStartingPoint + roomsCost + bathsCost) * cleaningTypeMultiplier;
+    let vacuumCleaner = hasVacuumCleaner();
+
+    let basicPrice = PRICES.START + roomsCost + bathsCost;
+
+    // if there is no vacuum cleaner - add its cost per order
+    if (vacuumCleaner === "false") basicPrice += vacuumCleanerCost;
+
+    let priceWithExtras = basicPrice + extrasCost;
+
+    return priceWithExtras;
 }
 
 function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
     let resultingMultiplier = 1;
 
-    const springCleaningPriceMultiplier = 2.3;
+    const springCleaningPriceMultiplier = 2;
     const classicCleaningPriceMultiplier = 1;
 
     const springCleaningTimeMultiplier = 1.5;
@@ -139,11 +184,12 @@ function getExtrasSelected() {
     let selectedExtras = [];
 
     for (let checkbox of checkboxes) {
-        if (checkbox.checked) selectedExtras.push(checkbox.id)
+        if (checkbox.checked) selectedExtras.push(checkbox.value)
     }
 
     return selectedExtras;
 }
+
 
 function getAmountOfRoomsSelected() {
     return document.getElementById('order-form-rooms').value;

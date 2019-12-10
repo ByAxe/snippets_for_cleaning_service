@@ -49,7 +49,8 @@ function collectOrderData(frequency) {
         },
         approximateCost: getApproximateCost(frequency),
         approximateTime: getApproximateTime(),
-        frequency: frequency
+        frequency: frequency,
+        hasVacuumCleaner: hasVacuumCleaner()
     };
 }
 

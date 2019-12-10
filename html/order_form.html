@@ -97,6 +97,15 @@
                 <!--</div>-->
             </fieldset>
             <br>
+            <fieldset>
+                <legend>У вас есть пылесос?</legend>
+                <label>
+                    <input class="order-form-vacuum-cleaner" id="order-form-vacuum-cleaner" type="checkbox"
+                           value="vacuum-cleaner" checked="checked" onclick="handleVacuumCleanerClick(this)">
+                    У меня есть пылесос
+                </label>
+            </fieldset>
+            <br>
         </div>
         <div class="column">
             <fieldset class="order-form-extras">
@@ -106,20 +115,39 @@
                            value="windows">
                     Мойка Окон
                 </label>
-                <label>
-                    <input class="order-form-extras-checkbox" id="order-form-extras-optimisation" type="checkbox"
-                           value="optimisation">
-                    Оптимизация внутреннего пространства шкафов
+                <label for="order-form-extras-windows-amount">
+                    <input id="order-form-extras-windows-amount" type="number"
+                           placeholder="Количество окон"/>
                 </label>
                 <label>
-                    <input class="order-form-extras-checkbox" id="order-form-extras-kitchen-inside-technique"
-                           type="checkbox" value="kit">
-                    Мойка кухонной техники изнутри
+                    <input class="order-form-extras-checkbox" id="order-form-extras-fridge" type="checkbox"
+                           value="fridge">
+                    Чистка холодильника
+                </label>
+                <label>
+                    <input class="order-form-extras-checkbox" id="order-form-extras-microwave-oven" type="checkbox"
+                           value="microwave-oven">
+                    Чистка микроволновой печи
+                </label>
+                <label>
+                    <input class="order-form-extras-checkbox" id="order-form-extras-oven" type="checkbox"
+                           value="oven">
+                    Чистка духовки
+                </label>
+                <label>
+                    <input class="order-form-extras-checkbox" id="order-form-extras-cooker-hood" type="checkbox"
+                           value="cooker-hood">
+                    Чистка кухонной вытяжки
                 </label>
                 <label>
                     <input class="order-form-extras-checkbox" id="order-form-extras-kitchen-inside-cabinets"
                            type="checkbox" value="kic">
-                    Мойка шкафчиков изнутри
+                    Уборка кухонных шкафчиков
+                </label>
+                <label>
+                    <input class="order-form-extras-checkbox" id="order-form-extras-dishes"
+                           type="checkbox" value="dishes">
+                    Мойка посуды
                 </label>
                 <label>
                     <input class="order-form-extras-checkbox" id="order-form-extras-balcony" type="checkbox"
@@ -132,9 +160,9 @@
                     Глажка вещей
                 </label>
                 <label>
-                    <input class="order-form-extras-checkbox" id="order-form-extras-fridge" type="checkbox"
-                           value="fridge">
-                    Чистка холодильника и морозильной камеры
+                    <input class="order-form-extras-checkbox" id="order-form-extras-optimisation" type="checkbox"
+                           value="optimisation">
+                    Оптимизация пространства шкафов
                 </label>
             </fieldset>
         </div>
