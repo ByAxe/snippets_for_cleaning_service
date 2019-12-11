@@ -71,7 +71,23 @@
     display: block;
 }
 
+.windows-input-invisible {
+    display: none;
+    margin-top: -30px;
+}
 
+#order-form-extras-windows-amount-text {
+    margin-bottom: auto;
+}
+
+.windows-input-visible {
+    display: block;
+    margin-top: initial;
+}
+
+.windows-input-visible {
+    margin-bottom: auto;
+}
 
 
 /*Everything that's smaller than iPad screen*/

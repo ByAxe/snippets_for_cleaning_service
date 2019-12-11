@@ -112,13 +112,13 @@
                 <legend>Дополнительные услуги</legend>
                 <label>
                     <input class="order-form-extras-checkbox" id="order-form-extras-windows" type="checkbox"
-                           value="windows">
+                           value="windows" onclick="handleClickOnWindowsCheck(this)">
                     Мойка Окон
                 </label>
-                <label for="order-form-extras-windows-amount">
-                    <input id="order-form-extras-windows-amount" type="number"
-                           placeholder="Количество окон"/>
-                </label>
+                <p id="order-form-extras-windows-amount-text" class="windows-input-invisible">Количество створок</p>
+                <input id="order-form-extras-windows-amount" class="windows-input-invisible" type="number"
+                       placeholder="Количество окон" onchange="handleWindowsAmountChange(this)"
+                       min="1" max="1000" value="0"/>
                 <label>
                     <input class="order-form-extras-checkbox" id="order-form-extras-fridge" type="checkbox"
                            value="fridge">

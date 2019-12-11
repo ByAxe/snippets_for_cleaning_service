@@ -53,11 +53,9 @@ jQuery('#order-form-cleaning-type-classic')
 // Если все чекбоксы выбраны - выставить тип Генеральная уборка
 jQuery(".order-form-extras-checkbox").on('click', () => {
     if (isAllExtrasSelected()) {
-        // выбираем
         jQuery("#order-form-cleaning-type-spring-cleaning").click();
-
-        updatePricesAndTime();
     }
+    updatePricesAndTime();
 });
 
 function markAllExtrasAs(checked) {
@@ -105,47 +103,68 @@ function hasVacuumCleaner() {
     return checkbox.checked ? "true" : "false";
 }
 
-function getSumOfExtras(extras) {
+function handleClickOnWindowsCheck(checkbox) {
+    let visible = "windows-input-visible";
+    let invisible = "windows-input-invisible";
 
-    switch (extras) {
-        case "windows":
+    let input = document.getElementById("order-form-extras-windows-amount");
+    let text = document.getElementById("order-form-extras-windows-amount-text");
+
+    if (checkbox.checked) {
+        input.classList.replace(invisible, visible);
+        text.classList.replace(invisible, visible);
+        text.style.marginBottom = "auto";
+        input.value = 1;
+    } else {
+        input.classList.replace(visible, invisible);
+        text.classList.replace(visible, invisible);
+        input.value = 0;
+    }
+}
+
+function handleWindowsAmountChange(input) {
+    restrictNumberValues(input);
+    updatePricesAndTime();
+}
+
+function getWindowsAmount() {
+    let input = document.getElementById("order-form-extras-windows-amount");
+
+    return input.value;
+}
+
+function getSumOfExtras(extras) {
+    let sum = 0;
+
+    for (let option in extras) {
+        if ("windows") sum += PRICES.EXTRAS.WINDOW * getWindowsAmount();
+        if ("fridge") sum += PRICES.EXTRAS.FRIDGE;
+        if ("microwave-oven") sum += PRICES.EXTRAS.MICROWAVE_OVEN;
+        if ("oven") sum += PRICES.EXTRAS.OVEN;
+        if ("cooker-hood") sum += PRICES.EXTRAS.COOKER_HOOD;
+        if ("kic") sum += PRICES.EXTRAS.CABINETS;
+        if ("dishes") sum += PRICES.EXTRAS.DISHES;
+        if ("balcony") sum += PRICES.EXTRAS.BALCONY;
+        if ("ironing") sum += PRICES.EXTRAS.IRONING;
+        if ("optimisation") sum += PRICES.EXTRAS.OPTIMISATION;
     }
 
-    return undefined;
+    return sum;
 }
 
 function recalculatePrice() {
-    // get amount of rooms selected
-    let rooms = getAmountOfRoomsSelected();
+    // calculate resulting price for selected items
+    let basicPrice = PRICES.START
+        + (PRICES.ROOM * getAmountOfRoomsSelected())
+        + (PRICES.BATH * getAmountOfBathsSelected());
 
-    // get amount of baths selected
-    let baths = getAmountOfBathsSelected();
-
-    // get type of cleaning selected
-    let cleaningType = getTypeOfCleaningSelected();
+    // if there is no vacuum cleaner - add its cost per order
+    if (hasVacuumCleaner() === "false") basicPrice += PRICES.VACUUM_CLEANER;
 
     // get extras selected
     let extras = getExtrasSelected();
 
-    let extrasCost = getSumOfExtras(extras);
-
-    // calculate resulting price for selected items
-    let roomsCost = PRICES.ROOM * rooms;
-
-    let bathsCost = PRICES.BATH * baths;
-
-    let cleaningTypeMultiplier = getCleaningTypeMultiplier(priceType, cleaningType);
-
-    let vacuumCleaner = hasVacuumCleaner();
-
-    let basicPrice = PRICES.START + roomsCost + bathsCost;
-
-    // if there is no vacuum cleaner - add its cost per order
-    if (vacuumCleaner === "false") basicPrice += vacuumCleanerCost;
-
-    let priceWithExtras = basicPrice + extrasCost;
-
-    return priceWithExtras;
+    return basicPrice + getSumOfExtras(extras);
 }
 
 function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
