@@ -9,7 +9,7 @@ const PRICES = {
     START: 16,
     VACUUM_CLEANER: 5,
     EXTRAS: {
-        WINDOW: 8,
+        WINDOW: 12,
         FRIDGE: 12,
         MICROWAVE_OVEN: 8,
         OVEN: 15,
@@ -59,7 +59,12 @@ jQuery(".order-form-extras-checkbox").on('click', () => {
 });
 
 function markAllExtrasAs(checked) {
-    jQuery('.order-form-extras-checkbox').prop('checked', checked);
+    let checkboxes = jQuery('.order-form-extras-checkbox');
+    checkboxes.prop('checked', checked);
+    for (let checkbox of checkboxes) {
+        if (checkbox.value === "windows")
+            handleClickOnWindowsCheck(checkbox)
+    }
 }
 
 function handleNumberInputChange(input) {
@@ -136,11 +141,11 @@ function getWindowsAmount() {
 function getSumOfExtras(extrasMap) {
     let sum = 0;
 
-    for (let [option, isPresent] of extrasMap) {
-        if (!isPresent) continue;
+    for (let [option, amount] of extrasMap) {
+        if (amount === 0) continue;
         switch (option) {
             case "windows":
-                sum += PRICES.EXTRAS.WINDOW * getWindowsAmount();
+                sum += PRICES.EXTRAS.WINDOW * amount;
                 break;
             case "fridge":
                 sum += PRICES.EXTRAS.FRIDGE;
@@ -166,12 +171,11 @@ function getSumOfExtras(extrasMap) {
             case "ironing":
                 sum += PRICES.EXTRAS.IRONING;
                 break;
-            case "":
+            case "optimisation":
                 sum += PRICES.EXTRAS.OPTIMISATION;
                 break;
         }
     }
-
     return sum;
 }
 
@@ -226,7 +230,13 @@ function getExtrasSelectedMap() {
     let selectedExtras = new Map([]);
 
     for (let checkbox of checkboxes) {
-        selectedExtras.set(checkbox.value, checkbox.checked)
+        let amount = 0;
+        if (checkbox.checked) {
+            if (checkbox.value === "windows") amount = getWindowsAmount();
+            else amount = 1;
+
+            selectedExtras.set(checkbox.value, amount)
+        }
     }
 
     return selectedExtras;
