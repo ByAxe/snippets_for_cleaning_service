@@ -133,20 +133,43 @@ function getWindowsAmount() {
     return input.value;
 }
 
-function getSumOfExtras(extras) {
+function getSumOfExtras(extrasMap) {
     let sum = 0;
 
-    for (let option in extras) {
-        if ("windows") sum += PRICES.EXTRAS.WINDOW * getWindowsAmount();
-        if ("fridge") sum += PRICES.EXTRAS.FRIDGE;
-        if ("microwave-oven") sum += PRICES.EXTRAS.MICROWAVE_OVEN;
-        if ("oven") sum += PRICES.EXTRAS.OVEN;
-        if ("cooker-hood") sum += PRICES.EXTRAS.COOKER_HOOD;
-        if ("kic") sum += PRICES.EXTRAS.CABINETS;
-        if ("dishes") sum += PRICES.EXTRAS.DISHES;
-        if ("balcony") sum += PRICES.EXTRAS.BALCONY;
-        if ("ironing") sum += PRICES.EXTRAS.IRONING;
-        if ("optimisation") sum += PRICES.EXTRAS.OPTIMISATION;
+    for (let [option, isPresent] of extrasMap) {
+        if (!isPresent) continue;
+        switch (option) {
+            case "windows":
+                sum += PRICES.EXTRAS.WINDOW * getWindowsAmount();
+                break;
+            case "fridge":
+                sum += PRICES.EXTRAS.FRIDGE;
+                break;
+            case "microwave-oven":
+                sum += PRICES.EXTRAS.MICROWAVE_OVEN;
+                break;
+            case "oven":
+                sum += PRICES.EXTRAS.OVEN;
+                break;
+            case "cooker-hood":
+                sum += PRICES.EXTRAS.COOKER_HOOD;
+                break;
+            case "kic":
+                sum += PRICES.EXTRAS.CABINETS;
+                break;
+            case "dishes":
+                sum += PRICES.EXTRAS.DISHES;
+                break;
+            case "balcony":
+                sum += PRICES.EXTRAS.BALCONY;
+                break;
+            case "ironing":
+                sum += PRICES.EXTRAS.IRONING;
+                break;
+            case "":
+                sum += PRICES.EXTRAS.OPTIMISATION;
+                break;
+        }
     }
 
     return sum;
@@ -162,9 +185,9 @@ function recalculatePrice() {
     if (hasVacuumCleaner() === "false") basicPrice += PRICES.VACUUM_CLEANER;
 
     // get extras selected
-    let extras = getExtrasSelected();
+    let extrasMap = getExtrasSelectedMap();
 
-    return basicPrice + getSumOfExtras(extras);
+    return basicPrice + getSumOfExtras(extrasMap);
 }
 
 function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
@@ -198,12 +221,12 @@ function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
     return resultingMultiplier;
 }
 
-function getExtrasSelected() {
+function getExtrasSelectedMap() {
     let checkboxes = jQuery('.order-form-extras-checkbox');
-    let selectedExtras = [];
+    let selectedExtras = new Map([]);
 
     for (let checkbox of checkboxes) {
-        if (checkbox.checked) selectedExtras.push(checkbox.value)
+        selectedExtras.set(checkbox.value, checkbox.checked)
     }
 
     return selectedExtras;
@@ -298,7 +321,7 @@ function recalculateTime() {
     let cleaningType = getTypeOfCleaningSelected();
 
     // get extras selected
-    let extras = getExtrasSelected();
+    let extras = getExtrasSelectedMap();
 
     let roomsTime = rooms * roomsTimeMultiplier;
     let bathsTime = baths * bathsTimeMultiplier;

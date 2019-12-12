@@ -39,7 +39,7 @@ function collectOrderData(frequency) {
         rooms: getAmountOfRoomsSelected(),
         baths: getAmountOfBathsSelected(),
         cleaningType: getTypeOfCleaningSelected(),
-        selectedExtras: getExtrasSelected(),
+        selectedExtras: getExtrasSelectedMap(),
         date: getValueForInput("order-form-datetime"),
         customer: {
             name: getValueForInput("order-form-name"),
