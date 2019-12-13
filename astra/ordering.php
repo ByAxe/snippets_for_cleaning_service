@@ -124,12 +124,15 @@ function extrasToReadableArray(array $extrasArray)
         $value = "";
 
         if ($item === "windows") $value = "Мойка Окон";
-        if ($item === "optimisation") $value = "Оптимизация внутреннего пространства шкафов";
-        if ($item === "kit") $value = "Мойка кухонной техники изнутри";
-        if ($item === "kic") $value = "Мойка шкафчиков изнутри";
+        if ($item === "fridge") $value = "Чистка холодильника (или морозильной камеры) изнутри";
+        if ($item === "microwave-oven") $value = "Чистка микроволновой печи";
+        if ($item === "oven") $value = "Чистка духовки";
+        if ($item === "cooker-hood") $value = "Чистка кухонной вытяжки";
+        if ($item === "kic") $value = "Уборка кухонных шкафчиков";
+        if ($item === "dishes") $value = "Мойка посуды";
         if ($item === "balcony") $value = "Уборка балкона";
         if ($item === "ironing") $value = "Глажка вещей";
-        if ($item === "fridge") $value = " Чистка холодильника и морозильной камеры";
+        if ($item === "optimisation") $value = "Оптимизация пространства шкафов";
 
         $result[] = $value;
     }

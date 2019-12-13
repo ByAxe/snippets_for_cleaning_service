@@ -138,45 +138,34 @@ function getWindowsAmount() {
     return input.value;
 }
 
-function getSumOfExtras(extrasMap) {
-    let sum = 0;
-
-    for (let [option, amount] of extrasMap) {
-        if (amount === 0) continue;
-        switch (option) {
-            case "windows":
-                sum += PRICES.EXTRAS.WINDOW * amount;
-                break;
-            case "fridge":
-                sum += PRICES.EXTRAS.FRIDGE;
-                break;
-            case "microwave-oven":
-                sum += PRICES.EXTRAS.MICROWAVE_OVEN;
-                break;
-            case "oven":
-                sum += PRICES.EXTRAS.OVEN;
-                break;
-            case "cooker-hood":
-                sum += PRICES.EXTRAS.COOKER_HOOD;
-                break;
-            case "kic":
-                sum += PRICES.EXTRAS.CABINETS;
-                break;
-            case "dishes":
-                sum += PRICES.EXTRAS.DISHES;
-                break;
-            case "balcony":
-                sum += PRICES.EXTRAS.BALCONY;
-                break;
-            case "ironing":
-                sum += PRICES.EXTRAS.IRONING;
-                break;
-            case "optimisation":
-                sum += PRICES.EXTRAS.OPTIMISATION;
-                break;
+function getSumOfExtras(extras) {
+    return Object.entries(extras).reduce((sum, [key, value]) => {
+        if (value !== 0) {
+            switch (key) {
+                case "windows":
+                    return sum += PRICES.EXTRAS.WINDOW * value;
+                case "fridge":
+                    return sum += PRICES.EXTRAS.FRIDGE;
+                case "microwave-oven":
+                    return sum += PRICES.EXTRAS.MICROWAVE_OVEN;
+                case "oven":
+                    return sum += PRICES.EXTRAS.OVEN;
+                case "cooker-hood":
+                    return sum += PRICES.EXTRAS.COOKER_HOOD;
+                case "kic":
+                    return sum += PRICES.EXTRAS.CABINETS;
+                case "dishes":
+                    return sum += PRICES.EXTRAS.DISHES;
+                case "balcony":
+                    return sum += PRICES.EXTRAS.BALCONY;
+                case "ironing":
+                    return sum += PRICES.EXTRAS.IRONING;
+                case "optimisation":
+                    return sum += PRICES.EXTRAS.OPTIMISATION;
+            }
         }
-    }
-    return sum;
+        return sum;
+    }, 0);
 }
 
 function recalculatePrice() {
@@ -227,7 +216,7 @@ function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
 
 function getExtrasSelectedMap() {
     let checkboxes = jQuery('.order-form-extras-checkbox');
-    let selectedExtras = new Map([]);
+    let selectedExtras = {};
 
     for (let checkbox of checkboxes) {
         let amount = 0;
@@ -235,7 +224,7 @@ function getExtrasSelectedMap() {
             if (checkbox.value === "windows") amount = getWindowsAmount();
             else amount = 1;
 
-            selectedExtras.set(checkbox.value, amount)
+            selectedExtras[checkbox.value] = amount;
         }
     }
 
