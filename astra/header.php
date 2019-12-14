@@ -29,8 +29,6 @@ if (!defined('ABSPATH')) {
 
 <body <?php astra_schema_body(); ?> <?php body_class(); ?>>
 
-<link rel="stylesheet" href="http://xn--90aia2asp.xn--90ais/wp-content/themes/astra/assets/css/global.css"
-
 <?php astra_body_top(); ?>
 <?php wp_body_open(); ?>
 <div

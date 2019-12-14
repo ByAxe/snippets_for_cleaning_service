@@ -35,9 +35,6 @@ if (!defined('ABSPATH')) {
 
 <?php wp_footer(); ?>
 
-<script src="http://xn--90aia2asp.xn--90ais/wp-content/themes/astra/assets/js/order_form_interaction.js"></script>
-<script src="http://xn--90aia2asp.xn--90ais/wp-content/themes/astra/assets/js/order_form_send.js"></script>
-
 </body>
 </html>
 

@@ -139,9 +139,9 @@ function getWindowsAmount() {
 }
 
 function getSumOfExtras(extras) {
-    return Object.entries(extras).reduce((sum, [key, value]) => {
+    return Object.entries(extras).reduce((sum, [option, value]) => {
         if (value !== 0) {
-            switch (key) {
+            switch (option) {
                 case "windows":
                     return sum += PRICES.EXTRAS.WINDOW * value;
                 case "fridge":
