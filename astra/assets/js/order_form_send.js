@@ -17,7 +17,7 @@ jQuery("a[href='#order-frequency-option-twoweekly']").on("click", () => {
     processClickOnOrderButton(FREQUENCY.TWOWEEKLY);
 });
 
-jQuery("a[href='#order-frequency-option-often']").on("click", () => {
+jQuery("a[href='#order-frequency-option-weekly']").on("click", () => {
     processClickOnOrderButton(FREQUENCY.WEEKLY);
 });
 
@@ -39,7 +39,7 @@ function collectOrderData(frequency) {
         rooms: getAmountOfRoomsSelected(),
         baths: getAmountOfBathsSelected(),
         cleaningType: getTypeOfCleaningSelected(),
-        selectedExtras: getExtrasSelectedMap(),
+        selectedExtras: getExtrasSelected(),
         date: getValueForInput("order-form-datetime"),
         customer: {
             name: getValueForInput("order-form-name"),

@@ -39,26 +39,28 @@ function order_function()
 function getBodyAsObject()
 {
     //{
-    //   "rooms":"3",
-    //   "baths":"1",
-    //   "cleaningType":"classic-cleaning",
-    //   "selectedExtras":[
-    //      "order-form-extras-windows",
-    //      "order-form-extras-optimisation",
-    //      "order-form-extras-kitchen-inside-technique",
-    //      "order-form-extras-balcony"
-    //   ],
-    //   "date":"2019-12-20T12:44",
-    //   "customer":{
-    //      "name":"Имя Фамилия",
-    //      "phone":"80256151788",
-    //      "address":"Минск Космонавтов 47-24",
-    //      "email":"kontrol@mail.ru"
+    //   "rooms":"4",
+    //   "baths":"2",
+    //   "cleaningType":"spring-cleaning",
+    //   "selectedExtras":{
+    //      "windows":"3",
+    //      "oven":1,
+    //      "cooker-hood":1,
+    //      "kic":1,
+    //      "dishes":1,
+    //      "optimisation":1
     //   },
-    //   "approximateCost":66,
-    //   "approximateTime":4,
-    //   "frequency":"monthly".
-    //   "hasVacuumCleaner": true
+    //   "date":"2019-12-19T12:12",
+    //   "customer":{
+    //      "name":"Алексей",
+    //      "phone":" 375 25 615 17 88",
+    //      "address":"Космонавтов",
+    //      "email":"mymail@gamil.com"
+    //   },
+    //   "approximateCost":185,
+    //   "approximateTime":8,
+    //   "frequency":"monthly",
+    //   "hasVacuumCleaner":"true"
     //}
     return json_decode(urldecode(explode("body=", $_SERVER['QUERY_STRING'])[1]));
 }

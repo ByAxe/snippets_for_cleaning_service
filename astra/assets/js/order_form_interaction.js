@@ -9,7 +9,7 @@ const PRICES = {
     START: 16,
     VACUUM_CLEANER: 5,
     EXTRAS: {
-        WINDOW: 12,
+        WINDOW: 5,
         FRIDGE: 12,
         MICROWAVE_OVEN: 8,
         OVEN: 15,
@@ -178,7 +178,7 @@ function recalculatePrice() {
     if (hasVacuumCleaner() === "false") basicPrice += PRICES.VACUUM_CLEANER;
 
     // get extras selected
-    let extrasMap = getExtrasSelectedMap();
+    let extrasMap = getExtrasSelected();
 
     return basicPrice + getSumOfExtras(extrasMap);
 }
@@ -214,7 +214,7 @@ function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
     return resultingMultiplier;
 }
 
-function getExtrasSelectedMap() {
+function getExtrasSelected() {
     let checkboxes = jQuery('.order-form-extras-checkbox');
     let selectedExtras = {};
 
@@ -320,7 +320,7 @@ function recalculateTime() {
     let cleaningType = getTypeOfCleaningSelected();
 
     // get extras selected
-    let extras = getExtrasSelectedMap();
+    let extras = getExtrasSelected();
 
     let roomsTime = rooms * roomsTimeMultiplier;
     let bathsTime = baths * bathsTimeMultiplier;
