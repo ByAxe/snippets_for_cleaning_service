@@ -5,7 +5,10 @@ function order_function()
 {
     $body = getBodyAsObject();
 
+    // TODO DEBUG INFO
+    echo "Incoming data";
     print_r($body);
+    echo "\n\n";
 
     // Create connection
     $connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -72,11 +75,33 @@ function getBodyAsObject()
  */
 function saveCustomerToDB(stdClass $customer, mysqli $connection)
 {
-    $customerId = 0;
+    $table = "customers";
 
     // check if such customer exists -> get its id
+    $sql = "SELECT * FROM $table WHERE name='$customer->name' AND phone='$customer->phone' AND address='$customer->address'";
 
-    // save to db if not exists and get its id
+    $result = $connection->query($sql);
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            return $row["id"];
+        }
+    }
+
+    // save to db if not exists and get its id\
+    $columns = "name, phone, address, email";
+    $values = "'$customer->name', '$customer->phone', '$customer->address', '$customer->email'";
+
+    $sql = "INSERT INTO $table ($columns) VALUES ($values)";
+
+    $customerId = null;
+
+    if ($connection->query($sql) === TRUE) {
+        $customerId = $connection->insert_id;
+    } else {
+        echo "Error: " . $sql . "<br>" . $connection->error;
+    }
 
     return $customerId;
 }
@@ -90,56 +115,44 @@ function saveCustomerToDB(stdClass $customer, mysqli $connection)
  */
 function saveOrderToDB(stdClass $body, $customerId, mysqli $connection)
 {
-    $table = "order_data";
+    $ordersTable = "orders";
+    $orderServicesTable = "order_services";
 
-    $extrasAsReadableText = implode(", ", extrasToReadableArray($body->selectedExtras));
+    // Create order in orders table
+    $columns = "cleaning_type, customer, order_date, frequency";
 
-    // build insert statement
-    $columns = "rooms, baths, cleaning_type, selected_extras, customer_id, date,
-                   frequency, approximate_cost, approximate_time";
+    $values = "'$body->cleaningType', '$customerId', '$body->date', '$body->frequency'";
 
-    $values = "$body->rooms, $body->baths, $body->cleaningType, $extrasAsReadableText, $customerId, $body->date,
-               $body->frequency, $body->approximate_cost, $body->approximate_time";
+    $sql = "INSERT INTO $ordersTable ($columns) VALUES ($values)";
 
-    $sql = "INSERT INTO $table ($columns) VALUES ($values)";
+    $orderId = null;
 
-//     insert order data into db
-//    if ($connection->query($sql) === TRUE) {
-//        return "Success!";
-//    } else {
-//        return "Error: $sql <br> $connection->error";
-//    }
-
-    return "";
-}
-
-/**
- * Convert extras from bare id array to readable array of values
- * @param array $extrasArray
- * @return array
- */
-function extrasToReadableArray(array $extrasArray)
-{
-    $result = array();
-
-    foreach ($extrasArray as $item) {
-        $value = "";
-
-        if ($item === "windows") $value = "Мойка Окон";
-        if ($item === "fridge") $value = "Чистка холодильника (или морозильной камеры) изнутри";
-        if ($item === "microwave-oven") $value = "Чистка микроволновой печи";
-        if ($item === "oven") $value = "Чистка духовки";
-        if ($item === "cooker-hood") $value = "Чистка кухонной вытяжки";
-        if ($item === "kic") $value = "Уборка кухонных шкафчиков";
-        if ($item === "dishes") $value = "Мойка посуды";
-        if ($item === "balcony") $value = "Уборка балкона";
-        if ($item === "ironing") $value = "Глажка вещей";
-        if ($item === "optimisation") $value = "Оптимизация пространства шкафов";
-
-        $result[] = $value;
+    if ($connection->query($sql) === TRUE) {
+        $orderId = $connection->insert_id;
+    } else {
+        return "Error: $sql <br> $connection->error";
     }
 
-    return $result;
+    // Save to many-to-many table
+    $services = (array)$body->selectedExtras;
+    $services['rooms'] = $body->rooms;
+    $services['baths'] = $body->baths;
+    $services['vacuum_cleaner'] = $body->hasVacuumCleaner ? 0 : 1;
+
+    $columns = "order_id, service_id, amount";
+
+    // TODO save to order_services table all the rows
+    foreach ($services as $service => $amount) {
+        $values = "'$orderId', '$service', '$amount'";
+
+        $sql = "INSERT INTO $orderServicesTable ($columns) VALUES ($values)";
+
+        if ($connection->query($sql) !== TRUE) {
+            return "Error: $sql <br> $connection->error";
+        }
+    }
+
+    return "";
 }
 
 ?>

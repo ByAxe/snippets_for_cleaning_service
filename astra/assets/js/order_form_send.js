@@ -22,12 +22,30 @@ jQuery("a[href='#order-frequency-option-weekly']").on("click", () => {
 });
 
 
+function validateOrderData(orderData) {
+    let errors = [];
+
+    if (orderData.customer.name === "") errors.push("Имя должно быть заполнено.");
+    if (orderData.customer.address === "") errors.push("Адрес должен быть заполнен");
+    if (orderData.customer.phone === "" && orderData.customer.email === "") {
+        errors.push("В заказе должен присутствовать телефон, или email");
+    }
+    if (orderData.date === "") errors.push("Дата и время заказа не выбрано");
+    if (orderData.cleaningType === "") errors.push("Вид уборки не выбран (Классическая, или Генеральная)");
+
+    return errors;
+}
+
 function processClickOnOrderButton(frequency) {
     let orderData = collectOrderData(frequency);
 
-    let result = sendOrderDataOnBackend(orderData);
+    let errors = validateOrderData(orderData);
 
-    showResultToUser(result);
+    if (errors.length === 0) {
+        sendOrderDataOnBackend(orderData);
+    } else {
+        alert(errors.map(error => "- " + error).join("\n"));
+    }
 }
 
 function collectOrderData(frequency) {
@@ -63,12 +81,11 @@ function sendOrderDataOnBackend(orderData) {
 
     let response = fetch(fetchInput, {
         method: "POST",
-    });
-
-    return response.json;
+    }).then(r => r.text())
+        .then(r => showResultToUser(r));
 }
 
 function showResultToUser(result) {
-
+    alert(result);
 }
 
