@@ -5,11 +5,6 @@ function order_function()
 {
     $body = getBodyAsObject();
 
-    // TODO DEBUG INFO
-    echo "Incoming data";
-    print_r($body);
-    echo "\n\n";
-
     // Create connection
     $connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
@@ -22,10 +17,12 @@ function order_function()
     $customerId = saveCustomerToDB($body->customer, $connection);
 
     // Save order to DB
-    $result = saveOrderToDB($body, $customerId, $connection);
+    $orderId = saveOrderToDB($body, $customerId, $connection);
 
     // Show results of saving on frontend
-    echo $result;
+    echo "Ваш заявка была принята!\nВскоре наш оператор свяжется с Вами по указанным контактным данным :)";
+
+    sendMail($orderId);
 
     // Close the connection
     $connection->close();
@@ -34,6 +31,14 @@ function order_function()
     die;
 }
 
+function sendMail($orderId)
+{
+    // TODO read everything from DB for particular order
+
+    // TODO compose email to operator
+
+    // TODO send email
+}
 
 /**
  * Conversion from query parameter to Object
@@ -107,11 +112,10 @@ function saveCustomerToDB(stdClass $customer, mysqli $connection)
 }
 
 /**
- * Save order to DB
  * @param stdClass $body
  * @param $customerId
  * @param mysqli $connection
- * @return string
+ * @return mixed|string|null
  */
 function saveOrderToDB(stdClass $body, $customerId, mysqli $connection)
 {
@@ -152,7 +156,7 @@ function saveOrderToDB(stdClass $body, $customerId, mysqli $connection)
         }
     }
 
-    return "";
+    return $orderId;
 }
 
 ?>
