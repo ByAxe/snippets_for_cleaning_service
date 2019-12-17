@@ -19,10 +19,12 @@ function order_function()
     // Save order to DB
     $orderId = saveOrderToDB($body, $customerId, $connection);
 
+    $connection->commit();
+
     // Show results of saving on frontend
     echo "Ваш заявка была принята!\nВскоре наш оператор свяжется с Вами по указанным контактным данным :)";
 
-    sendMail($orderId);
+    sendMail($orderId, $connection);
 
     // Close the connection
     $connection->close();
@@ -31,13 +33,43 @@ function order_function()
     die;
 }
 
-function sendMail($orderId)
+function sendMail($orderId, mysqli $connection)
 {
-    // TODO read everything from DB for particular order
+    // read everything from DB for particular order
+    $orderTable = "orders";
+    $servicesTable = "services";
+    $orderServicesTable = "order_services";
+    $cleaningTypesTable = "cleaning_types";
+    $frequenciesTable = "frequencies";
+    $customersTable = "customers";
+
+    $sql = "SELECT * FROM $orderTable o
+            WHERE o.id='$orderId'
+            JOIN $customersTable c ON o.customer = c.id";
+//            JOIN $cleaningTypesTable ct ON o.cleaning_type = ct.id
+//            JOIN $frequenciesTable f ON o.frequency = f.id
+//            JOIN $orderServicesTable os ON o.id = os.order_id
+//            JOIN $servicesTable s ON os.service_id = s.id";
+
+    echo("\n$sql\n");
+
+    $result = $connection->query($sql);
+
+    echo("\n$result->num_rows\n");
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while ($row = $result->fetch_assoc()) {
+            print_r($row);
+        }
+    }
 
     // TODO compose email to operator
 
+
     // TODO send email
+
+
 }
 
 /**
