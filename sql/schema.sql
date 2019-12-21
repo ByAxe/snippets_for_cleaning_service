@@ -106,7 +106,8 @@ VALUES ('rooms', 'Уборка комнаты', '', 14.0, 0.5, false, true),
        ('balcony', 'Уборка балкона', '', 12.0, 0.5, true, true),
        ('ironing', 'Глажка вещей', '', 10.0, 0.5, true, true),
        ('optimisation', 'Отптимизация внутренного пространства шкафа', '', 10.0, 0.5, true, true),
-       ('vacuum_cleaner', 'Использование пылесоса Компании', '', 5.0, 0.1, true, true);
+       ('vacuum_cleaner', 'Использование пылесоса Компании', '', 5.0, 0.1, true, true),
+       ('order_departure', 'Выезд на заказ', '', 16.0, 1, false, true);
 
 
 INSERT INTO frequencies (id, discount, description)

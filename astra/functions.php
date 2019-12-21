@@ -161,4 +161,4 @@ require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-functions.php';
 add_action('wp_ajax_order', 'order_function'); // wp_ajax_{ЗНАЧЕНИЕ ПАРАМЕТРА ACTION!!}
 add_action('wp_ajax_nopriv_order', 'order_function');  // wp_ajax_nopriv_{ЗНАЧЕНИЕ ACTION!!}
 
-include 'ordering.php';
+include 'custom/ordering.php';
