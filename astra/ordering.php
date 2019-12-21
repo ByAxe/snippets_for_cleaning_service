@@ -38,14 +38,56 @@ function sendMail($orderId, mysqli $connection)
     // Read from db everything about an order EXCEPT services
     $orderData = getOrderData($orderId, $connection);
 
-    // TODO Read from db order services for order
+    // Read from db order services for order
     $orderServices = getServicesForOrder($orderId, $connection);
 
-    // TODO compose email to operator
+    // TODO prepare message from obtained order data
+    $message = prepareMessage($orderData, $orderServices);
 
-    // TODO send email
+    // TODO send message
+//    sendMessage($message);
+}
 
+/**
+ * Build message from obtained order data
+ * @param array $orderData order data
+ * @param array $orderServices order services
+ * @return string resulting message
+ */
+function prepareMessage(array $orderData, array $orderServices)
+{
+    return "";
+}
 
+/**
+ * Send prepared message to operator
+ * @param $message
+ */
+function sendMessage($message)
+{
+    $emailAddress = 'name @ company . com';
+    $subject = 'Новый заказ';
+    $headers = 'From: noreply@уберем.бел';
+
+    $secureCheck = sanitizeEmail($emailAddress);
+
+    if ($secureCheck == false) {
+        echo "Неправильные данные для письма!";
+    } else { //send email
+        mail($emailAddress, $subject, $message, $headers);
+        echo "Письмо отправлено.";
+    }
+}
+
+/**
+ * Check field for email
+ * @param $field
+ * @return bool
+ */
+function sanitizeEmail($field)
+{
+    $field = filter_var($field, FILTER_SANITIZE_EMAIL);
+    return filter_var($field, FILTER_VALIDATE_EMAIL);
 }
 
 /**
