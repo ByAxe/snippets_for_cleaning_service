@@ -63,8 +63,6 @@ CREATE TABLE order_services
 
 
 # INSERT
-
-
 INSERT INTO cleaning_types (id, title, description)
 VALUES ('spring-cleaning', 'Генеральная', '<li><b>Генеральную уборку</b>, согласно рекомендациям специалистов,
                                 следует проводить не реже чем <b>раз в 3 месяца</b>.

@@ -35,41 +35,83 @@ function order_function()
 
 function sendMail($orderId, mysqli $connection)
 {
-    // read everything from DB for particular order
-    $orderTable = "orders";
-    $servicesTable = "services";
-    $orderServicesTable = "order_services";
-    $cleaningTypesTable = "cleaning_types";
-    $frequenciesTable = "frequencies";
-    $customersTable = "customers";
+    // Read from db everything about an order EXCEPT services
+    $orderData = getOrderData($orderId, $connection);
 
-    $sql = "SELECT * FROM $orderTable o
-            WHERE o.id='$orderId'
-            JOIN $customersTable c ON o.customer = c.id";
-//            JOIN $cleaningTypesTable ct ON o.cleaning_type = ct.id
-//            JOIN $frequenciesTable f ON o.frequency = f.id
-//            JOIN $orderServicesTable os ON o.id = os.order_id
-//            JOIN $servicesTable s ON os.service_id = s.id";
-
-    echo("\n$sql\n");
-
-    $result = $connection->query($sql);
-
-    echo("\n$result->num_rows\n");
-
-    if ($result->num_rows > 0) {
-        // output data of each row
-        while ($row = $result->fetch_assoc()) {
-            print_r($row);
-        }
-    }
+    // TODO Read from db order services for order
+    $orderServices = getServicesForOrder($orderId, $connection);
 
     // TODO compose email to operator
-
 
     // TODO send email
 
 
+}
+
+/**
+ * Read from db order services for order
+ * @param $orderId
+ * @param mysqli $connection
+ * @return array
+ */
+function getServicesForOrder($orderId, mysqli $connection)
+{
+    $servicesTable = "services";
+    $orderServicesTable = "order_services";
+
+    $sql = "SELECT s.*, os.amount amount
+            FROM $orderServicesTable os
+            INNER JOIN ($servicesTable s)
+            ON (os.service_id = s.id AND os.order_id = $orderId)
+            GROUP BY s.id";
+
+    $result = $connection->query($sql);
+
+    $orderServices = [];
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($orderServices, $row);
+        }
+    }
+
+    return $orderServices;
+}
+
+/**
+ * Read from db everything about an order EXCEPT services
+ * @param $orderId
+ * @param mysqli $connection
+ * @return array|null
+ */
+function getOrderData($orderId, mysqli $connection)
+{
+    $orderTable = "orders";
+    $cleaningTypesTable = "cleaning_types";
+    $frequenciesTable = "frequencies";
+    $customersTable = "customers";
+
+    $sql = "SELECT 
+                o.id order_id, o.dt_create dt_create, o.order_date order_date, 
+                c.name name, c.phone phone, c.address address, c.email email, c.payload customer_payload,
+                f.description frequency, f.discount frequency_discount,
+                ct.title ct_title
+            FROM $orderTable o
+            INNER JOIN ($customersTable c , $cleaningTypesTable ct, $frequenciesTable f)
+            ON (o.customer = c.id AND o.id=$orderId)
+            GROUP BY o.id";
+
+    $result = $connection->query($sql);
+
+    $orderData = null;
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $orderData = $row;
+        }
+    }
+
+    return $orderData;
 }
 
 /**
