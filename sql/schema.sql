@@ -1,3 +1,6 @@
+# Hack for MySQL to allow dropping foreign key rows without dropping of a scheme
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS customers CASCADE;
 CREATE TABLE customers
 (
@@ -120,3 +123,5 @@ VALUES ('once', 0.0, 'Разовая'),
        ('monthly', 10.0, 'Раз в месяц'),
        ('twoweekly', 15.0, 'Раз в две недели'),
        ('weekly', 20.0, 'Раз в неделю');
+
+SET FOREIGN_KEY_CHECKS = 1;
