@@ -14,10 +14,8 @@ function sendMail($orderId, mysqli $connection)
     // prepare message from obtained order data
     $message = prepareMessage($orderData, $orderServices);
 
-    echo $message;
-
-    // TODO send message
-//    sendMessage($message);
+    // send message
+    sendMessage($message);
 }
 
 /**
@@ -39,7 +37,7 @@ function prepareMessage(array $orderData, array $orderServices)
 function combineOrderDataAndOrderServices($orderDataAsString, $orderServices)
 {
     $header = "<h1>Данные заказа</h1><br>";
-    $servicesBreak = "<hr><h2>Услуги заказа</h2><br>";
+    $servicesBreak = "<h1>Услуги заказа</h1><br>";
     $message = $header . $orderDataAsString . $servicesBreak . $orderServices;
 
     return $message;
@@ -53,15 +51,32 @@ function combineOrderDataAndOrderServices($orderDataAsString, $orderServices)
 function sendMessage($message)
 {
     $subject = 'Новый заказ';
-    $headers = 'From: noreply@уберем.бел';
+    $headers = "From: noreply@уберем.бел\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+
+    $style = "<style>
+                         table, td, th {
+                            border: 1px solid #3a3a3a;
+                         }
+                         td {
+                            text-align: center;
+                         }
+                    </style>";
+
+    $htmlMessage = '<!DOCTYPE html><html lang="ru-RU">' .
+        '<head><title>Новый заказ</title>'
+        . $style
+        . '</head>'
+        . '<body>'
+        . '<div>' . $message . '</div>'
+        . '</body>'
+        . '</html>';
 
     $secureCheck = sanitizeEmail(OPERATOR_EMAIL_ADDRESS);
 
-    if ($secureCheck == false) {
-        echo "Неправильные данные для письма!";
-    } else { //send email
-        mail(OPERATOR_EMAIL_ADDRESS, $subject, $message, $headers);
-        echo "Письмо отправлено.";
+    if ($secureCheck != false) {
+        wp_mail(OPERATOR_EMAIL_ADDRESS, $subject, $htmlMessage, $headers);
     }
 }
 
@@ -89,7 +104,7 @@ function getServicesForOrder($orderId, mysqli $connection)
     $sql = "SELECT s.*, os.amount amount
             FROM " . ORDER_SERVICES_TABLE . " os
             INNER JOIN (" . SERVICES_TABLE . " s)
-            ON (os.service_id = s.id AND os.order_id = $orderId)
+            ON (os.service_id = s.id AND os.order_id = $orderId AND amount <> 0)
             GROUP BY s.id";
 
     $result = $connection->query($sql);
@@ -129,15 +144,13 @@ function addBasicServicesToArray(array &$orderServices, mysqli $connection)
             array_push($orderServices, $row);
         }
     }
-
-
 }
 
 /**
  * Read from db everything about an order EXCEPT services
  * @param $orderId
  * @param mysqli $connection
- * @return array|null
+ * @return array
  */
 function getOrderData($orderId, mysqli $connection)
 {
@@ -154,12 +167,15 @@ function getOrderData($orderId, mysqli $connection)
         ", ct.title " . FIELD_CLEANING_TYPE["f"] .
         " FROM " . ORDERS_TABLE . " o
             INNER JOIN (" . CUSTOMERS_TABLE . " c , " . CLEANING_TYPES_TABLE . " ct, " . FREQUENCIES_TABLE . " f)
-            ON (o.customer = c.id AND o.id=$orderId)
+            ON (o.customer = c.id 
+                AND o.cleaning_type = ct.id 
+                AND o.frequency = f.id 
+                AND o.id=$orderId)
             GROUP BY o.id";
 
     $result = $connection->query($sql);
 
-    $orderData = null;
+    $orderData = [];
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {

@@ -143,7 +143,14 @@ function saveOrderToDB(stdClass $body, $customerId, mysqli $connection)
     $services = (array)$body->selectedExtras;
     $services['rooms'] = $body->rooms;
     $services['baths'] = $body->baths;
-    $services['vacuum_cleaner'] = $body->hasVacuumCleaner ? 0 : 1;
+
+    $isVacuumCleanerNeeded = 1;
+
+    if ($body->hasVacuumCleaner === true) {
+        $isVacuumCleanerNeeded = 0;
+    }
+
+    $services['vacuum_cleaner'] = $isVacuumCleanerNeeded;
 
     $columns = "order_id, service_id, amount";
 
@@ -159,6 +166,40 @@ function saveOrderToDB(stdClass $body, $customerId, mysqli $connection)
     }
 
     return $orderId;
+}
+
+/**
+ * Calculates summarising data for given order
+ * @param array $orderData main order data
+ * @param array $orderServices services included in order
+ * @return array named array of sums calculated for given order
+ */
+function calculateOrderSummary($orderData, $orderServices)
+{
+
+    $totalCost = 0;
+    $totalTimeHours = 0;
+
+    // calculate sums of an order
+    foreach ($orderServices as $service) {
+        $price = $service[FIELD_OS_PRICE["f"]];
+        $duration = $service[FIELD_OS_DURATION["f"]];
+        $amount = $service[FIELD_AMOUNT["f"]];
+
+        $totalCost += $price * $amount;
+        $totalTimeHours += $duration * $amount;
+    }
+
+    // round up total time in hours to int value
+    $totalTimeHours = round($totalTimeHours);
+
+    // calculate required amount of masters
+    $workingDayHours = 8;
+    $requiredMastersAmount = 1 + intdiv($totalTimeHours, $workingDayHours);
+
+    return array("totalCost" => $totalCost,
+        "totalTimeHours" => $totalTimeHours,
+        "requiredMastersAmount" => $requiredMastersAmount);
 }
 
 ?>

@@ -1,13 +1,5 @@
 <?php
 
-const TABLE_STYLE = "<style>
-                         table, td, th {
-                            border: 1px solid #3a3a3a;
-                         }
-                         td {
-                            text-align: center;
-                         }
-                    </style>";
 
 /**
  * Converts order data to readable string
@@ -16,7 +8,7 @@ const TABLE_STYLE = "<style>
  */
 function convertOrderDataToString($orderData)
 {
-    $result = TABLE_STYLE . "<table>";
+    $result = "<table>";
     $result .= "<thead>";
     $result .= "<tr><th>Поле</th><th>Значение</th></tr>";
     $result .= "</thead>";
@@ -67,6 +59,7 @@ function convertOrderDataToString($orderData)
     $result .= "</tbody>";
     $result .= "</table>";
 
+
     return $result;
 }
 
@@ -91,7 +84,6 @@ function convertOrderServicesToString($orderServices)
                     <th>" . FIELD_OS_TITLE["n"] . "</th>
                     <th>" . FIELD_OS_PRICE["n"] . "</th>
                     <th>" . FIELD_OS_DURATION["n"] . "</th>
-                    <th>" . FIELD_OS_IS_EXTRA["n"] . "</th>
                     <th>" . FIELD_AMOUNT["n"] . "</th>
                 </tr>";
 
@@ -99,6 +91,8 @@ function convertOrderServicesToString($orderServices)
 
     // build rows of services
     foreach ($orderServices as $service) {
+        $result .= "<tr>";
+
         foreach ($service as $field => $value) {
 
             $resultingValue = $value;
@@ -106,11 +100,12 @@ function convertOrderServicesToString($orderServices)
             // insert row numbers for id
             if ($field === "id") {
                 $resultingValue = $number;
-            } // change boolean values from numbers to text
-            else if (FIELD_OS_IS_EXTRA["f"] === $field) {
-                $resultingValue = $value ? "Да" : "Нет";
             } // we don't need to show whether is service available
-            else if (FIELD_OS_IS_AVAILABLE["f"] === $field || FIELD_OS_DESCRIPTION["f"] === $field) continue;
+            else if (FIELD_OS_IS_AVAILABLE["f"] === $field
+                || FIELD_OS_DESCRIPTION["f"] === $field
+                || FIELD_OS_IS_EXTRA["f"] === $field) {
+                continue;
+            }
 
             $result .= "<td>$resultingValue</td>";
         }
@@ -118,31 +113,17 @@ function convertOrderServicesToString($orderServices)
         $number++;
     }
 
-    $totalCost = 0;
-    $totalTimeHours = 0;
 
-    // calculate sums of an order
-    foreach ($orderServices as $service) {
-        foreach ($service as $field => $value) {
-            if (FIELD_OS_PRICE["f"] === $field) {
-                $totalCost += $value;
-            } else if (FIELD_OS_DURATION["f"] === $field) {
-                $totalTimeHours += $value;
-            }
-        }
-    }
+    $summary = calculateOrderSummary(null, $orderServices);
 
-    // round up total time in hours to int value
-    $totalTimeHours = round($totalTimeHours);
-
-    // calculate required amount of masters
-    $workingDayHours = 8;
-    $requiredMastersAmount = 1 + intdiv($totalTimeHours, $workingDayHours);
+    $totalCost = $summary["totalCost"];
+    $totalTimeHours = $summary["totalTimeHours"];
+    $requiredMastersAmount = $summary["requiredMastersAmount"];
 
     // Add sums to resulting string
-    $result .= "<tr><td colspan='2'>СУММА ЗАКАЗА</td><td><b>$totalCost</b></td></tr>";
-    $result .= "<tr><td colspan='3'>ПРИМЕРНОЕ ВРЕМЯ ВЫПОЛНЕНИЯ ЗАКАЗА (ЧАСОВ)</td><td><b>$totalTimeHours</b></td></tr>";
-    $result .= "<tr><td colspan='5'>КОЛИЧЕСТВО ТРЕБУЕМЫХ МАСТЕРОВ НА ЗАКАЗ</td><td><b>$requiredMastersAmount</b></td></tr>";
+    $result .= "<tr><td colspan='2'>СУММА ЗАКАЗА (БЕЗ УЧËТА СКИДКИ)</td><td><b>$totalCost</b></td></tr>";
+    $result .= "<tr><td colspan='3'>ПРИМЕРНОЕ ВРЕМЯ ВЫПОЛНЕНИЯ ЗАКАЗА (ЧАСОВ) ОДНИМ МАСТЕРОМ</td><td><b>$totalTimeHours</b></td></tr>";
+    $result .= "<tr><td colspan='4'>КОЛИЧЕСТВО ТРЕБУЕМЫХ МАСТЕРОВ НА ЗАКАЗ</td><td><b>$requiredMastersAmount</b></td></tr>";
 
     // close main tags of table
     $result .= "</tbody>";

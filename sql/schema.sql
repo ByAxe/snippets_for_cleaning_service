@@ -32,11 +32,14 @@ DROP TABLE IF EXISTS orders CASCADE;
 CREATE TABLE orders
 (
     id            INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    cleaning_type VARCHAR(50)     NOT NULL REFERENCES cleaning_types (id),
-    customer      INT             NOT NULL REFERENCES customers (id),
+    cleaning_type VARCHAR(50)     NOT NULL,
+    customer      INT             NOT NULL,
     order_date    TIMESTAMP       NOT NULL,
-    frequency     VARCHAR(50)     NOT NULL REFERENCES frequencies (id),
-    dt_create     TIMESTAMP       NOT NULL DEFAULT now()
+    frequency     VARCHAR(50)     NOT NULL,
+    dt_create     TIMESTAMP       NOT NULL DEFAULT now(),
+    FOREIGN KEY (cleaning_type) REFERENCES cleaning_types (id),
+    FOREIGN KEY (customer) REFERENCES customers (id),
+    FOREIGN KEY (frequency) REFERENCES frequencies (id)
 );
 
 
@@ -55,10 +58,12 @@ CREATE TABLE services
 DROP TABLE IF EXISTS order_services CASCADE;
 CREATE TABLE order_services
 (
-    order_id   INT         NOT NULL REFERENCES orders (id),
-    service_id VARCHAR(50) NOT NULL REFERENCES services (id),
+    order_id   INT         NOT NULL,
+    service_id VARCHAR(50) NOT NULL,
     amount     FLOAT       NOT NULL DEFAULT 1.0,
-    PRIMARY KEY (order_id, service_id)
+    PRIMARY KEY (order_id, service_id),
+    FOREIGN KEY (order_id) REFERENCES orders (id),
+    FOREIGN KEY (service_id) REFERENCES services (id)
 );
 
 
@@ -79,7 +84,7 @@ VALUES ('spring-cleaning', 'Генеральная', '<li><b>Генеральн�
                                 ведь так вы всегда сможете
                                 жить, как в абсолютно новой квартире
                             </li>'),
-       ('classic', 'Классическая', '<li><b>Классическая уборка</b>, это вид уборки, при котором наша компания выполняет все
+       ('classic-cleaning', 'Классическая', '<li><b>Классическая уборка</b>, это вид уборки, при котором наша компания выполняет все
                                 указанные в <a href="#our-services-block">оказываемых услугах</a>
                                 процедуры очистки помещений. По умолчанию доп. услуги не входят в этот перечень,
                                 но <i>их можно добавить</i> когда вы заказываете наш сервис.
