@@ -31,5 +31,8 @@ define("FIELD_OS_IS_AVAILABLE", array("f" => "available", "n" => "Услуга �
 define("FIELD_AMOUNT", array("f" => "amount", "n" => "Количество"));
 
 
+// BASIC SERVICES ID
+define("BASIC_SERVICES_ID_LIST", array("order_departure"));
+
 // EMAIL DATA
 define("OPERATOR_EMAIL_ADDRESS", "johnkinsleygl@gmail.com");

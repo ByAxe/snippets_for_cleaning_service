@@ -14,6 +14,8 @@ function sendMail($orderId, mysqli $connection)
     // prepare message from obtained order data
     $message = prepareMessage($orderData, $orderServices);
 
+    echo $message;
+
     // TODO send message
 //    sendMessage($message);
 }
@@ -106,9 +108,29 @@ function getServicesForOrder($orderId, mysqli $connection)
     return $orderServices;
 }
 
-function addBasicServicesToArray(array $orderServices, mysqli $connection)
+function addBasicServicesToArray(array &$orderServices, mysqli $connection)
 {
-    // TODO implement
+    // Convert array to string, where each value is wrapped into single quotes '$value'
+    $basicServices = implode(",", array_map(function ($value) {
+        return "'" . $value . "'";
+    }, BASIC_SERVICES_ID_LIST));
+
+    $sql = "SELECT *
+            FROM " . SERVICES_TABLE . "
+            WHERE id IN ($basicServices)";
+
+    $result = $connection->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // amount for default services by default 1
+            $row[FIELD_AMOUNT["f"]] = 1;
+            // add this service to array
+            array_push($orderServices, $row);
+        }
+    }
+
+
 }
 
 /**

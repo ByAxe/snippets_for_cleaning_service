@@ -132,6 +132,9 @@ function convertOrderServicesToString($orderServices)
         }
     }
 
+    // round up total time in hours to int value
+    $totalTimeHours = round($totalTimeHours);
+
     // calculate required amount of masters
     $workingDayHours = 8;
     $requiredMastersAmount = 1 + intdiv($totalTimeHours, $workingDayHours);
