@@ -197,6 +197,8 @@ function calculateOrderSummary($orderData, $orderServices)
     $workingDayHours = 8;
     $requiredMastersAmount = 1 + intdiv($totalTimeHours, $workingDayHours);
 
+    $totalCost *= PREMIUM_MULTIPLIER;
+
     return array("totalCost" => $totalCost,
         "totalTimeHours" => $totalTimeHours,
         "requiredMastersAmount" => $requiredMastersAmount);

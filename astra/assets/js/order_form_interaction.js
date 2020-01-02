@@ -3,13 +3,15 @@ const classicCleaningType = 'classic-cleaning';
 const priceType = "PRICE";
 const timeType = "TIME";
 
+const MULTIPLIER = 3;
+
 const PRICES = {
     ROOM: 14,
     BATH: 15,
     START: 16,
     VACUUM_CLEANER: 5,
     EXTRAS: {
-        WINDOW: 5,
+        WINDOW: 8,
         FRIDGE: 12,
         MICROWAVE_OVEN: 8,
         OVEN: 15,
@@ -180,7 +182,8 @@ function recalculatePrice() {
     // get extras selected
     let extrasMap = getExtrasSelected();
 
-    return basicPrice + getSumOfExtras(extrasMap);
+    return (basicPrice + getSumOfExtras(extrasMap)) * MULTIPLIER;
+    // return basicPrice + getSumOfExtras(extrasMap);
 }
 
 function getCleaningTypeMultiplier(typeOfMultiplier, cleaningType) {
