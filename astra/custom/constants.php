@@ -37,4 +37,4 @@ define("BASIC_SERVICES_ID_LIST", array("order_departure"));
 // EMAIL DATA
 define("OPERATOR_EMAIL_ADDRESS", "johnkinsleygl@gmail.com");
 
-define("PREMIUM_MULTIPLIER", 3);
+define("PREMIUM_MULTIPLIER", 1);

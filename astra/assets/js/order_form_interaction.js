@@ -3,7 +3,7 @@ const classicCleaningType = 'classic-cleaning';
 const priceType = "PRICE";
 const timeType = "TIME";
 
-const MULTIPLIER = 3;
+const MULTIPLIER = 1;
 
 const PRICES = {
     ROOM: 14,
