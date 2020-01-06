@@ -95,9 +95,12 @@ function handleVacuumCleanerClick(checkbox) {
     updatePricesAndTime();
 }
 
-// update prices with the very beginning
 ((() => {
+    // update prices with the very beginning
     updatePricesAndTime();
+
+    jQuery("<br>").insertAfter(".price-tag")
+
 })());
 
 function updatePricesAndTime() {
