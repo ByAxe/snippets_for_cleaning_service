@@ -35,6 +35,6 @@ define("FIELD_AMOUNT", array("f" => "amount", "n" => "Количество"));
 define("BASIC_SERVICES_ID_LIST", array("order_departure"));
 
 // EMAIL DATA
-define("OPERATOR_EMAIL_ADDRESS", "johnkinsleygl@gmail.com");
+define("OPERATOR_EMAIL_ADDRESS", "alekseilitvinau@xn--90aia2asp.xn--90ais");
 
 define("PREMIUM_MULTIPLIER", 1);
