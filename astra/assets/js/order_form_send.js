@@ -55,7 +55,7 @@ function collectOrderData(frequency) {
 
     return {
         rooms: getAmountOfRoomsSelected(),
-        baths: getAmountOfBathsSelected(),
+        baths: getAmountOfBathsSelected() + getAmountOfKitchensSelected(), // TODO костыль, из-за того что ванные комнаты и кухни одинаковы по стоимости
         cleaningType: getTypeOfCleaningSelected(),
         selectedExtras: getExtrasSelected(),
         date: getValueForInput("order-form-datetime"),

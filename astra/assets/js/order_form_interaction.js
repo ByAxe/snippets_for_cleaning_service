@@ -8,6 +8,7 @@ const MULTIPLIER = 1;
 const PRICES = {
     ROOM: 14,
     BATH: 15,
+    KITCHEN: 15,
     START: 16,
     VACUUM_CLEANER: 5,
     EXTRAS: {
@@ -177,7 +178,8 @@ function recalculatePrice() {
     // calculate resulting price for selected items
     let basicPrice = PRICES.START
         + (PRICES.ROOM * getAmountOfRoomsSelected())
-        + (PRICES.BATH * getAmountOfBathsSelected());
+        + (PRICES.BATH * getAmountOfBathsSelected())
+        + (PRICES.KITCHEN * getAmountOfKitchensSelected());
 
     // if there is no vacuum cleaner - add its cost per order
     if (hasVacuumCleaner() === "false") basicPrice += PRICES.VACUUM_CLEANER;
@@ -257,6 +259,10 @@ function getAmountOfBathsSelected() {
     return document.getElementById('order-form-baths').value;
 }
 
+function getAmountOfKitchensSelected() {
+    return document.getElementById('order-form-kitchen').value;
+}
+
 function updateGlobalPrice(price, priceNumber) {
     switch (priceNumber) {
         case 0:
@@ -315,12 +321,16 @@ function recalculateTime() {
     const initialTime = 2;
     const roomsTimeMultiplier = 0.5;
     const bathsTimeMultiplier = 0.5;
+    const kitchenTimeMultiplier = 0.5;
 
     // get amount of rooms selected
     let rooms = getAmountOfRoomsSelected();
 
     // get amount of baths selected
     let baths = getAmountOfBathsSelected();
+
+    // get amount of kitchen selected
+    let kitchen = getAmountOfKitchensSelected();
 
     // get type of cleaning selected
     let cleaningType = getTypeOfCleaningSelected();
@@ -330,9 +340,10 @@ function recalculateTime() {
 
     let roomsTime = rooms * roomsTimeMultiplier;
     let bathsTime = baths * bathsTimeMultiplier;
+    let kitchenTime = kitchen * kitchenTimeMultiplier;
     let cleaningTypeMultiplier = getCleaningTypeMultiplier(timeType, cleaningType);
 
-    let resultingTime = Math.ceil((initialTime + roomsTime + bathsTime) * cleaningTypeMultiplier);
+    let resultingTime = Math.ceil((initialTime + roomsTime + bathsTime + kitchenTime) * cleaningTypeMultiplier);
 
     if (resultingTime > 8) resultingTime = "8+";
 

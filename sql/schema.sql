@@ -37,7 +37,7 @@ CREATE TABLE orders
     id            INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     cleaning_type VARCHAR(50)     NOT NULL,
     customer      INT             NOT NULL,
-    order_date    TIMESTAMP       NOT NULL,
+    order_date    TIMESTAMP,
     frequency     VARCHAR(50)     NOT NULL,
     dt_create     TIMESTAMP       NOT NULL DEFAULT now(),
     FOREIGN KEY (cleaning_type) REFERENCES cleaning_types (id),
