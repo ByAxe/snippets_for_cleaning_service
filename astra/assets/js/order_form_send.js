@@ -25,13 +25,13 @@ jQuery("a[href='#order-frequency-option-weekly']").on("click", () => {
 function validateOrderData(orderData) {
     let errors = [];
 
-    if (orderData.customer.name === "") errors.push("Имя должно быть заполнено.");
-    if (orderData.customer.address === "") errors.push("Адрес должен быть заполнен");
+    // if (orderData.customer.name === "") errors.push("Имя должно быть заполнено.");
+    // if (orderData.customer.address === "") errors.push("Адрес должен быть заполнен");
     if (orderData.customer.phone === "" && orderData.customer.email === "") {
         errors.push("В заказе должен присутствовать телефон, или email");
     }
-    if (orderData.date === "") errors.push("Дата и время заказа не выбрано");
-    if (orderData.cleaningType === "") errors.push("Вид уборки не выбран (Классическая, или Генеральная)");
+    // if (orderData.date === "") errors.push("Дата и время заказа не выбрано");
+    // if (orderData.cleaningType === "") errors.push("Вид уборки не выбран (Классическая, или Генеральная)");
 
     return errors;
 }
